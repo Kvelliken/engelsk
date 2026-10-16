@@ -1,0 +1,50 @@
+[
+  {
+    "id": "see",
+    "tekst": "I see a ___",
+    "norsk": "Jeg ser …",
+    "mal": ["I", "see", "{art}", "{ord}"],
+    "ikon": "emoji:👀",
+    "laasOpp": 0,
+    "eksempel": "I see a cat.",
+    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog",
+            "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich",
+            "house", "tree", "door", "stone", "block", "cave", "stage"]
+  },
+  {
+    "id": "am",
+    "tekst": "I am ___",
+    "norsk": "Jeg er …",
+    "mal": ["I", "am", "{ord}"],
+    "ikon": "emoji:🙋",
+    "laasOpp": 0,
+    "eksempel": "I am happy.",
+    "ord": ["happy", "sad", "angry", "scared", "surprised", "fast", "slow"]
+  },
+  {
+    "id": "like",
+    "tekst": "I like ___",
+    "norsk": "Jeg liker …",
+    "mal": ["I", "like", "{liker}"],
+    "ikon": "emoji:❤️",
+    "laasOpp": 6,
+    "eksempel": "I like pizza.",
+    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog",
+            "apple", "milk", "cake", "bread", "pizza", "banana", "egg", "ice-cream", "juice", "cookie", "cheese", "orange", "carrot", "strawberry", "sandwich", "soup",
+            "red", "blue", "green", "yellow", "black", "white", "pink", "purple", "brown", "grey",
+            "water", "sand", "build", "dig",
+            "music", "jump", "dance", "clap", "spin", "move"]
+  },
+  {
+    "id": "have",
+    "tekst": "I have a ___",
+    "norsk": "Jeg har …",
+    "mal": ["I", "have", "{art}", "{ord}"],
+    "ikon": "emoji:🤲",
+    "laasOpp": 12,
+    "eksempel": "I have a dog.",
+    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "duck", "mouse", "rabbit", "frog",
+            "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich",
+            "house", "block", "stone", "door"]
+  }
+]

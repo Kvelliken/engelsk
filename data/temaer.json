@@ -1,0 +1,8 @@
+[
+  { "id": "dyr", "navn": "Dyr", "ikon": "emoji:🐶", "farge": "#f2994a" },
+  { "id": "mat", "navn": "Mat og drikke", "ikon": "emoji:🍎", "farge": "#eb5757" },
+  { "id": "farger-tall", "navn": "Farger og tall", "ikon": "emoji:🎨", "farge": "#2f80ed" },
+  { "id": "blokkverden", "navn": "Blokkverden", "ikon": "piksel:blokk", "farge": "#3f9a35", "profiltema": "blokk" },
+  { "id": "dans", "navn": "Dans og følelser", "ikon": "emoji:💃", "farge": "#8e44ad", "profiltema": "scene" },
+  { "id": "smaaord", "navn": "Småord", "ikon": "emoji:💬", "farge": "#5b6675", "skjult": true }
+]
