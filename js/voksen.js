@@ -6,7 +6,7 @@ import { registrerSkjerm, gaTil } from './nav.js';
 import { topplinje } from './felles.js';
 import { eksportKode, eksportJson, lesImport, tilbakestillProfil } from './lagring.js';
 import { erSett, stjerner, status } from './srs.js';
-import { engelskeStemmer, siTekst } from './lyd.js';
+import { rangerteStemmer, stemmeKvalitet, siTekst } from './lyd.js';
 import { hentVersjon, sjekkOppdatering } from './oppdatering.js';
 import { idag, leggTilDager } from './dato.js';
 import { VERDENER } from './profiler.js';
@@ -212,18 +212,32 @@ function profilSeksjon() {
 function lydSeksjon() {
   const inst = app.data.innstillinger;
   const velger = el('select', { class: 'velger', 'aria-label': 'Stemme' });
+  const tips = el('p', null, '');
+  const merke = (v) => {
+    const k = stemmeKvalitet(v);
+    if (k === 0) return ' – robot';
+    if (k >= 60) return ' – ★ premium';
+    if (k >= 40) return ' – ★ forbedret';
+    return '';
+  };
   function fyll() {
     while (velger.firstChild) velger.removeChild(velger.firstChild);
-    velger.appendChild(el('option', { value: '' }, 'Automatisk (britisk engelsk)'));
-    engelskeStemmer().forEach((v) => {
-      velger.appendChild(el('option', { value: v.voiceURI, selected: v.voiceURI === inst.stemme }, v.name + ' (' + v.lang + ')'));
+    const stemmer = rangerteStemmer();
+    const beste = stemmer[0];
+    velger.appendChild(el('option', { value: '' }, 'Automatisk' + (beste ? ' (' + beste.name + ')' : '')));
+    stemmer.forEach((v) => {
+      velger.appendChild(el('option', { value: v.voiceURI, selected: v.voiceURI === inst.stemme }, v.name + ' (' + v.lang + ')' + merke(v)));
     });
+    tips.textContent = beste && stemmeKvalitet(beste) >= 40
+      ? ''
+      : 'Tips: iPaden har ingen forbedret engelsk stemme. Last ned en (se under), så blir uttalen mye tydeligere.';
   }
   fyll();
   if ('speechSynthesis' in window) speechSynthesis.addEventListener('voiceschanged', fyll);
   velger.addEventListener('change', () => {
     inst.stemme = velger.value || null;
     lagreData();
+    siTekst('Hello! I see a cat.');
   });
   const tempo = el('select', { class: 'velger', 'aria-label': 'Tempo' },
     [[0.7, 'Sakte'], [0.85, 'Litt sakte'], [1, 'Normal']].map(([v, t]) =>
@@ -236,7 +250,8 @@ function lydSeksjon() {
     ? 'Mikrofonen er avslått. Slå den på i Innstillinger → Safari → Mikrofon, og trykk «Spør på nytt».'
     : inst.mik === 'ok' ? 'Mikrofonen er i bruk.' : 'Appen har ikke spurt om mikrofonen ennå.';
   return seksjon('Lyd og mikrofon',
-    el('p', null, 'Stemmen er iPadens egen tekst-til-tale. Flere stemmer kan lastes ned i Innstillinger → Tilgjengelighet → Opplest innhold → Stemmer → Engelsk.'),
+    el('p', null, 'Stemmen er iPadens egen tekst-til-tale. Bedre stemmer lastes ned gratis i Innstillinger → Tilgjengelighet → Opplest innhold → Stemmer → Engelsk. Velg f.eks. «Serena (Forbedret)» eller «Daniel (Forbedret)», og lukk og åpne appen etterpå.'),
+    tips,
     el('div', { class: 'knapperad' }, velger, tempo,
       knapp('🔊 Test', () => siTekst('Hello! I like pizza. I see a cat.'), 'knapp sekundar')),
     el('p', null, mikTekst),
