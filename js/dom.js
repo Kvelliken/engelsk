@@ -37,6 +37,7 @@ export function visSkjerm(node) {
   const rot = document.getElementById('app');
   tom(rot);
   rot.appendChild(node);
+  document.querySelectorAll('.konfetti, .dialog-bakgrunn').forEach((e) => e.remove());
   window.scrollTo(0, 0);
 }
 

@@ -49,6 +49,7 @@ body[data-tema="scene"] {
 }
 
 * { box-sizing: border-box; }
+[hidden] { display: none !important; }
 
 html, body {
   margin: 0;
@@ -293,7 +294,7 @@ body[data-tema="blokk"] .prikk { border-radius: 3px; }
 .luke .brikke { margin: 0; }
 
 /* ---------- Ferdig / belønning ---------- */
-.ferdig-merke { font-size: 120px; line-height: 1; animation: hopp .7s ease; }
+.ferdig-merke { font-size: 120px; line-height: 1; margin-top: 32px; animation: hopp .7s ease; }
 .ferdig-tekst { font-size: 1.3rem; color: var(--dempet); max-width: 560px; }
 .nye-ord { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
 .nytt-ord { display: flex; flex-direction: column; align-items: center; gap: 4px; padding: 10px 14px; background: var(--kort); border: 2px solid var(--linje); border-radius: var(--rund-liten); font-weight: 700; }

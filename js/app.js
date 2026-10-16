@@ -6,6 +6,9 @@ import { gaTil } from './nav.js';
 import { registrerServiceWorker } from './oppdatering.js';
 import './profiler.js';
 import './hjem.js';
+import './okt.js';
+import './ordliste.js';
+import './voksen.js';
 
 async function hentJson(sti) {
   const svar = await fetch(sti);
