@@ -1,7 +1,7 @@
 // Inngangspunkt: laster data og innhold, og viser første skjerm.
 import { app, settInnhold, aktivProfil } from './tilstand.js';
 import { lastData, beOmVarigLagring } from './lagring.js';
-import { lasOpp } from './lyd.js';
+import { lasOpp, settLydfiler } from './lyd.js';
 import { gaTil } from './nav.js';
 import { registrerServiceWorker } from './oppdatering.js';
 import './profiler.js';
@@ -24,6 +24,7 @@ async function start() {
     hentJson('./data/temaer.json')
   ]);
   settInnhold(ord, rammer, temaer);
+  hentJson('./data/lyd.json').then((l) => settLydfiler(l.filer)).catch(() => {});
 
   // iOS: lyd kan først starte etter et trykk.
   document.addEventListener('touchend', lasOpp, { passive: true });

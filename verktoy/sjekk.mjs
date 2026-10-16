@@ -70,8 +70,30 @@ for (const r of rammer) {
   }
 }
 
+// ---- Lydfiler ----
+const advarsler = [];
+const lyd = json('data/lyd.json');
+const lydSett = new Set(lyd.filer);
+const nokkel = (t) => t.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+for (const n of lyd.filer) if (!existsSync(join(ROT, 'assets/lyd', n + '.mp3'))) feil.push('data/lyd.json lister en lydfil som mangler: ' + n);
+const trengs = new Set(ord.map((o) => o.en));
+for (const r of rammer) {
+  for (const id of r.ord) {
+    const o = ordMap[id];
+    if (!o) continue;
+    const brikker = r.mal.map((t) => (t === '{art}' ? o.art : t === '{ord}' ? o.en : t === '{liker}' ? o.liker : t));
+    brikker.forEach((b) => trengs.add(b));
+    trengs.add(brikker.join(' '));
+  }
+}
+for (const t of trengs) if (!lydSett.has(nokkel(t))) advarsler.push(t);
+if (advarsler.length) {
+  console.warn('Uten lydfil (iPad-stemmen brukes): ' + advarsler.join(', '));
+  console.warn('Lag dem med: verktoy/lag-lyd.py (se README)');
+}
+
 const synlige = temaer.filter((t) => !t.skjult).length;
-console.log(ord.length + ' ord, ' + synlige + ' temaer, ' + rammer.length + ' rammer, ' + filer.length + ' filer i cachen');
+console.log(ord.length + ' ord, ' + synlige + ' temaer, ' + rammer.length + ' rammer, ' + filer.length + ' filer i cachen, ' + lyd.filer.length + ' lydfiler');
 if (feil.length) {
   console.error('\nFEIL:\n- ' + feil.join('\n- '));
   process.exit(1);

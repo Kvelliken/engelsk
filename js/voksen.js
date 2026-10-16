@@ -6,7 +6,7 @@ import { registrerSkjerm, gaTil } from './nav.js';
 import { topplinje } from './felles.js';
 import { eksportKode, eksportJson, lesImport, tilbakestillProfil } from './lagring.js';
 import { erSett, stjerner, status } from './srs.js';
-import { rangerteStemmer, stemmeKvalitet, siTekst } from './lyd.js';
+import { rangerteStemmer, stemmeKvalitet, siTekst, siMedStemme } from './lyd.js';
 import { hentVersjon, sjekkOppdatering } from './oppdatering.js';
 import { idag, leggTilDager } from './dato.js';
 import { VERDENER } from './profiler.js';
@@ -237,7 +237,7 @@ function lydSeksjon() {
   velger.addEventListener('change', () => {
     inst.stemme = velger.value || null;
     lagreData();
-    siTekst('Hello! I see a cat.');
+    siMedStemme('Hello! I see a cat.');
   });
   const tempo = el('select', { class: 'velger', 'aria-label': 'Tempo' },
     [[0.7, 'Sakte'], [0.85, 'Litt sakte'], [1, 'Normal']].map(([v, t]) =>
@@ -250,10 +250,13 @@ function lydSeksjon() {
     ? 'Mikrofonen er avslått. Slå den på i Innstillinger → Safari → Mikrofon, og trykk «Spør på nytt».'
     : inst.mik === 'ok' ? 'Mikrofonen er i bruk.' : 'Appen har ikke spurt om mikrofonen ennå.';
   return seksjon('Lyd og mikrofon',
-    el('p', null, 'Stemmen er iPadens egen tekst-til-tale. Bedre stemmer lastes ned gratis i Innstillinger → Tilgjengelighet → Opplest innhold → Stemmer → Engelsk. Velg f.eks. «Serena (Forbedret)» eller «Daniel (Forbedret)», og lukk og åpne appen etterpå.'),
+    el('p', null, 'Alle ord og setninger spilles av med en ferdig innspilt, tydelig stemme. iPadens egen stemme (under) brukes bare hvis en lydfil mangler, f.eks. for nye ord.'),
+    el('div', { class: 'knapperad' },
+      knapp('🔊 Innspilt stemme', () => siTekst('Hello! I like pizza. I see a cat.'), 'knapp sekundar')),
+    el('p', null, 'Reservestemme: iPadens tekst-til-tale. Bedre stemmer lastes ned gratis i Innstillinger → Tilgjengelighet → Opplest innhold → Stemmer → Engelsk. Velg f.eks. «Serena (Forbedret)» eller «Daniel (Forbedret)», og lukk og åpne appen etterpå.'),
     tips,
     el('div', { class: 'knapperad' }, velger, tempo,
-      knapp('🔊 Test', () => siTekst('Hello! I like pizza. I see a cat.'), 'knapp sekundar')),
+      knapp('🔊 iPad-stemme', () => siMedStemme('Hello! I like pizza. I see a cat.'), 'knapp sekundar')),
     el('p', null, mikTekst),
     inst.mik === 'nektet' ? knapp('Spør på nytt', () => { inst.mik = null; lagreData(); visVoksen(); }, 'knapp sekundar') : null);
 }
