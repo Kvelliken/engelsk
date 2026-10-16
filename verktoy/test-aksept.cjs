@@ -54,6 +54,7 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
   await p.reload();
   await p.waitForSelector('.startknapp, .profilkort', { timeout: 10000 });
   console.log('offline: appen starter ✓');
+  console.log('offline: lydfil', await p.evaluate(() => fetch('./assets/lyd/cat.mp3').then(r => r.ok && r.headers.get('content-type'))));
   await ctx.setOffline(false);
   // Oppdatering
   const orig = fs.readFileSync(SW, 'utf8');

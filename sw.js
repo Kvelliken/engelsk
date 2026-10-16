@@ -1,6 +1,6 @@
 // Service worker: cacher hele appen slik at den virker uten nett.
 // Bytt VERSJON når noe endres, så kommer oppdateringen frem til iPaden.
-const VERSJON = '2026-10-16.2';
+const VERSJON = '2026-10-16.3';
 const CACHE = 'engelsk-' + VERSJON;
 
 const FILER = [
@@ -34,6 +34,7 @@ const FILER = [
   './data/ord.json',
   './data/rammer.json',
   './data/temaer.json',
+  './data/lyd.json',
   './assets/ikoner/ikon-180.png',
   './assets/ikoner/ikon-192.png',
   './assets/ikoner/ikon-512.png',
@@ -42,8 +43,12 @@ const FILER = [
 
 self.addEventListener('install', (e) => {
   // cache: 'reload' går forbi nettleserens HTTP-cache, så vi får ferske filer.
-  e.waitUntil(caches.open(CACHE).then((c) =>
-    c.addAll(FILER.map((f) => new Request(f, { cache: 'reload' })))));
+  // Lydfilene står i data/lyd.json og lagres også, så lyden virker uten nett.
+  const ferske = (filer) => filer.map((f) => new Request(f, { cache: 'reload' }));
+  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(ferske(FILER))
+    .then(() => fetch('./data/lyd.json', { cache: 'reload' }))
+    .then((svar) => svar.json())
+    .then((l) => c.addAll(ferske(l.filer.map((n) => './assets/lyd/' + n + '.mp3'))))));
 });
 
 self.addEventListener('activate', (e) => {
@@ -68,7 +73,7 @@ self.addEventListener('fetch', (e) => {
   e.respondWith(caches.match(req, { ignoreSearch: true }).then((treff) => {
     if (treff) return treff;
     return fetch(req).then((svar) => {
-      // Lydfiler lagt til senere caches når de først er hentet.
+      // Egne lydfiler (ord.lyd) caches når de først er hentet.
       if (svar.ok && url.pathname.indexOf('/assets/lyd/') !== -1) {
         const kopi = svar.clone();
         caches.open(CACHE).then((c) => c.put(req, kopi));

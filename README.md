@@ -27,7 +27,7 @@ Appen bruker bare relative stier og har ikke noe byggesteg, så den virker direk
 3. Åpne appen fra hjemskjermen. Første gang må iPaden være på nett, deretter virker appen uten nett.
 
 **Tips:**
-- **Bedre stemme:** Innstillinger → Tilgjengelighet → Opplest innhold → Stemmer → Engelsk. Last ned en «Forbedret»- eller «Premium»-stemme (f.eks. *Serena* eller *Daniel*, britisk). Velg den i appens voksenvisning (⚙️).
+- **Stemme:** alle ord og setninger har ferdige lydfiler med en tydelig stemme (Kokoro, se under). iPadens egen stemme brukes bare som reserve hvis en lydfil mangler.
 - **Mikrofon:** første gang barnet trykker 🎙️, viser appen en forklaring, og så spør iPaden om lov. En voksen trykker *Tillat*. Har dere trykket *Ikke tillat*: Innstillinger → Safari → Mikrofon, og deretter «Spør på nytt» i voksenvisningen.
 - **Lyd:** sjekk at sideknappen/lydløs-modus ikke er på hvis det ikke kommer lyd.
 
@@ -97,8 +97,21 @@ Legg til en linje i `data/ord.json`:
 - `bilde`: `emoji:🚗`, `farge:#e53935`, `tall:3`, `piksel:<navn>` eller `svg:<navn>` (de to siste tegnes i `js/bilder.js`)
 - `art` (a/an) trengs for `I see a` / `I have a`; `liker` er formen i `I like ___` (cars, pizza, dancing)
 - Ta med ordet i `ord`-lista til rammene det passer i (`data/rammer.json`)
-- `lyd`: sti til en innspilt lydfil, f.eks. `./assets/lyd/car.mp3`. Uten lydfil brukes tekst-til-tale
+- `lyd`: (valgfritt) sti til en egen innspilt lydfil, f.eks. `./assets/egen-lyd/car.mp3`
 - Nytt tema: legg det til i `data/temaer.json`
+- Lag lydfiler for nye ord og setninger (se under). Uten lydfil brukes iPadens stemme.
+
+### Lydfiler
+Ord, ordbrikker og setninger spilles fra `assets/lyd/*.mp3`, laget med stemmemodellen [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, kjører lokalt). `data/lyd.json` lister filene, og service workeren lagrer dem for bruk uten nett. Etter at du har lagt til ord eller rammer:
+
+```
+python3 -m venv .tts && .tts/bin/pip install kokoro-onnx soundfile      # én gang
+curl -LO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/kokoro-v1.0.int8.onnx
+curl -LO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-files-v1.0/voices-v1.0.bin
+.tts/bin/python verktoy/lag-lyd.py --modell kokoro-v1.0.int8.onnx --stemmer voices-v1.0.bin
+```
+
+Bare nye tekster lages. Stemmen (`STEMME`) og tempoet står øverst i skriptet; bruk `--alle` for å lage alt på nytt. `node verktoy/sjekk.mjs` sier fra om tekster som mangler lydfil.
 
 ## Personvern
 Ingen innlogging, ingen sporing, ingen analyse, ingen eksterne lenker og ingen tredjepartsskript. En Content-Security-Policy i `index.html` stopper alle nettverkskall til andre domener. Alt lagres lokalt på iPaden. Lydopptak lagres ikke, de forsvinner når oppgaven er ferdig.

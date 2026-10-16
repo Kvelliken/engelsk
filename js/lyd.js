@@ -1,4 +1,6 @@
-// Tale (lydfil eller tekst-til-tale) og små lydeffekter.
+// Tale og små lydeffekter.
+// Ord og setninger spilles fra ferdige lydfiler (assets/lyd, laget med
+// verktoy/lag-lyd.py). iPadens tekst-til-tale brukes bare når en fil mangler.
 // iOS krever et trykk før lyd kan spilles, så lasOpp() kalles ved første trykk.
 import { app } from './tilstand.js';
 
@@ -6,6 +8,9 @@ let ctx = null;
 let taleLastOpp = false;
 let aktivYtring = null; // holdes på så iOS ikke rydder den bort midt i
 let lydElement = null;
+let aktivKilde = null;
+let lydfiler = new Set();
+const buffere = new Map();
 
 const harTale = typeof window !== 'undefined' && 'speechSynthesis' in window;
 
@@ -64,7 +69,66 @@ function velgStemme() {
   return stemmer[0] || null;
 }
 
+// Samme regel som lydnokkel() i verktoy/lag-lyd.py.
+export function lydNokkel(tekst) {
+  return tekst.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '').slice(0, 80);
+}
+
+export function settLydfiler(liste) {
+  lydfiler = new Set(liste || []);
+}
+
+export function harLydfil(tekst) {
+  return lydfiler.has(lydNokkel(tekst));
+}
+
+function hentBuffer(nokkel) {
+  if (!buffere.has(nokkel)) {
+    const lover = fetch('./assets/lyd/' + nokkel + '.mp3')
+      .then((svar) => {
+        if (!svar.ok) throw new Error('Mangler lyd ' + nokkel);
+        return svar.arrayBuffer();
+      })
+      // Tilbakekallsformen av decodeAudioData virker også i eldre Safari.
+      .then((data) => new Promise((ok, feil) => ctx.decodeAudioData(data, ok, feil)));
+    lover.catch(() => buffere.delete(nokkel));
+    buffere.set(nokkel, lover);
+  }
+  return buffere.get(nokkel);
+}
+
+function spillBuffer(buffer) {
+  return new Promise((resolve) => {
+    stopp();
+    if (ctx.state !== 'running') ctx.resume();
+    const kilde = ctx.createBufferSource();
+    kilde.buffer = buffer;
+    kilde.connect(ctx.destination);
+    aktivKilde = kilde;
+    let ferdig = false;
+    const slutt = () => {
+      if (ferdig) return;
+      ferdig = true;
+      clearTimeout(tidsfrist);
+      if (aktivKilde === kilde) aktivKilde = null;
+      resolve();
+    };
+    const tidsfrist = setTimeout(slutt, buffer.duration * 1000 + 1500);
+    kilde.onended = slutt;
+    kilde.start(0);
+  });
+}
+
+// Si en engelsk tekst: lydfil hvis den finnes, ellers iPadens stemme.
 export function siTekst(tekst, tempo) {
+  const nokkel = lydNokkel(tekst);
+  if (ctx && lydfiler.has(nokkel)) {
+    return hentBuffer(nokkel).then(spillBuffer, () => siMedStemme(tekst, tempo));
+  }
+  return siMedStemme(tekst, tempo);
+}
+
+export function siMedStemme(tekst, tempo) {
   return new Promise((resolve) => {
     if (!harTale) return resolve();
     // iOS kan miste en ytring som startes rett etter cancel(), så vent litt da.
@@ -110,6 +174,10 @@ export function spillFil(src) {
 }
 
 export function stopp() {
+  if (aktivKilde) {
+    try { aktivKilde.onended = null; aktivKilde.stop(); } catch (e) { /* allerede stoppet */ }
+    aktivKilde = null;
+  }
   if (harTale) speechSynthesis.cancel();
   aktivYtring = null;
   if (lydElement) {
