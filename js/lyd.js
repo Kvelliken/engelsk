@@ -49,6 +49,8 @@ function velgStemme() {
 export function siTekst(tekst, tempo) {
   return new Promise((resolve) => {
     if (!harTale) return resolve();
+    // iOS kan miste en ytring som startes rett etter cancel(), så vent litt da.
+    const opptatt = speechSynthesis.speaking || speechSynthesis.pending;
     speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(tekst);
     const v = velgStemme();
@@ -66,7 +68,8 @@ export function siTekst(tekst, tempo) {
     u.onend = slutt;
     u.onerror = slutt;
     aktivYtring = u;
-    speechSynthesis.speak(u);
+    if (opptatt) setTimeout(() => { if (aktivYtring === u) speechSynthesis.speak(u); }, 80);
+    else speechSynthesis.speak(u);
   });
 }
 

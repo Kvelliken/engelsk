@@ -91,6 +91,7 @@ export function opptaksPanel(fasit, ktx) {
   panel.avslutt = () => {
     clearTimeout(tidsfrist);
     if (opptak) { opptak.stopp(); opptak = null; }
+    if (minUrl) { URL.revokeObjectURL(minUrl); minUrl = null; }
   };
   return panel;
 }
