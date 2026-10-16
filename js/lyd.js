@@ -30,20 +30,38 @@ export function engelskeStemmer() {
   return speechSynthesis.getVoices().filter((v) => /^en[-_]/i.test(v.lang));
 }
 
+// iPadOS har mange engelske stemmer, også robotaktige «Eloquence»-stemmer og
+// morostemmer. Vi rangerer dem slik at den tydeligste stemmen velges.
+const DARLIGE = /eloquence|speech\.synthesis\.voice|novelty|^(albert|bad news|bahh|bells|boing|bubbles|cellos|deranged|good news|hysterical|jester|organ|pipe organ|superstar|trinoids|whisper|wobble|zarvox|fred|junior|ralph|kathy|eddy|flo|grandma|grandpa|reed|rocko|sandy|shelley)\b/i;
+const GODE = /\b(serena|daniel|kate|arthur|martha|stephanie|oliver|malcolm|jamie|samantha|ava|allison|susan|tom|zoe|nathan|evan|joelle|karen|moira|tessa)\b/i;
+
+export function stemmeKvalitet(v) {
+  const id = (v.voiceURI || '') + ' ' + v.name;
+  if (DARLIGE.test(v.name) || DARLIGE.test(v.voiceURI || '')) return 0;
+  let p = 10;
+  if (/premium/i.test(id)) p += 40;
+  else if (/enhanced|forbedret|siri/i.test(id)) p += 30;
+  if (GODE.test(v.name)) p += 10;
+  if (/en[-_]GB/i.test(v.lang)) p += 4;
+  else if (/en[-_]US/i.test(v.lang)) p += 3;
+  else if (/en[-_](AU|IE)/i.test(v.lang)) p += 1;
+  if (v.localService) p += 1;
+  return p;
+}
+
+// Engelske stemmer, beste først.
+export function rangerteStemmer() {
+  return engelskeStemmer().slice().sort((a, b) => stemmeKvalitet(b) - stemmeKvalitet(a));
+}
+
 function velgStemme() {
-  const stemmer = engelskeStemmer();
+  const stemmer = rangerteStemmer();
   const lagret = app.data && app.data.innstillinger.stemme;
   if (lagret) {
     const v = stemmer.find((s) => s.voiceURI === lagret);
     if (v) return v;
   }
-  const gb = (s) => /en[-_]GB/i.test(s.lang);
-  const us = (s) => /en[-_]US/i.test(s.lang);
-  return stemmer.find((s) => gb(s) && s.localService) ||
-    stemmer.find(gb) ||
-    stemmer.find((s) => us(s) && s.localService) ||
-    stemmer.find(us) ||
-    stemmer[0] || null;
+  return stemmer[0] || null;
 }
 
 export function siTekst(tekst, tempo) {
@@ -52,7 +70,7 @@ export function siTekst(tekst, tempo) {
     // iOS kan miste en ytring som startes rett etter cancel(), så vent litt da.
     const opptatt = speechSynthesis.speaking || speechSynthesis.pending;
     speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(tekst);
+    const u = new SpeechSynthesisUtterance(/[.!?]$/.test(tekst) ? tekst : tekst + '.');
     const v = velgStemme();
     if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = 'en-GB'; }
     u.rate = tempo || (app.data && app.data.innstillinger.taleTempo) || 0.85;

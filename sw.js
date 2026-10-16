@@ -1,6 +1,6 @@
 // Service worker: cacher hele appen slik at den virker uten nett.
 // Bytt VERSJON når noe endres, så kommer oppdateringen frem til iPaden.
-const VERSJON = '2026-10-16.1';
+const VERSJON = '2026-10-16.2';
 const CACHE = 'engelsk-' + VERSJON;
 
 const FILER = [
