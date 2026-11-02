@@ -214,6 +214,23 @@ const PIKSEL = {
       'DDDDDDDDdDDD'
     ]
   },
+  figurBlokk: {
+    p: { A: '#f2c94c', G: '#9fb3c8', g: '#7a8ea3', W: '#ffffff', K: '#1f2a37', M: '#e04848', B: '#3aa0e8', b: '#2b7cc0', L: '#5bbf4a' },
+    r: [
+      '.....AA.....',
+      '.....gg.....',
+      '.GGGGGGGGGG.',
+      '.GWWGGGGWWG.',
+      '.GWKGGGGWKG.',
+      '.GGGGGGGGGG.',
+      '.GGGMMMMGGG.',
+      '..gggggggg..',
+      '.BBBBLLBBBB.',
+      'GBBBLBBLBBBG',
+      'G.BBBBBBBB.G',
+      '...bb..bb...'
+    ]
+  },
   avatarBlokk: {
     p: { H: '#6b4226', S: '#f1c27d', s: '#d9a066', E: '#ffffff', e: '#2b6cb0', M: '#9e3b38', B: '#3aa0e8', b: '#2b7cc0' },
     r: [
@@ -275,6 +292,54 @@ const SVG = {
     '<path d="M44 32 l2 26 M45 40 l-14 12 M45 40 l14 10 M46 58 l-14 22 M46 58 l12 22" stroke="' + KROPP + '" stroke-width="6" stroke-linecap="round" fill="none"/>' +
     '<path d="M66 46 h22 M80 38 l8 8 l-8 8" stroke="#3aa0e8" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>' +
     '<path d="M10 40 h12 M6 52 h14 M10 64 h12" stroke="#3aa0e8" stroke-width="4" stroke-linecap="round" opacity=".6"/>',
+  sparke:
+    '<path d="M10 92 h80" stroke="#8a5a32" stroke-width="4" stroke-linecap="round"/>' +
+    '<circle cx="36" cy="18" r="9" fill="' + HODE + '"/>' +
+    '<path d="M36 28 v26 M36 36 l-14 10 M36 36 l14 -6 M36 54 l-4 34 M36 54 l24 14" stroke="' + KROPP + '" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+    '<circle cx="74" cy="76" r="11" fill="#fff" stroke="#1f2a37" stroke-width="3"/>' +
+    '<path d="M70 70 l8 0 l3 6 l-7 5 l-7 -5 z" fill="#1f2a37"/>' +
+    '<path d="M88 62 l6 -4 M90 72 h7 M88 82 l6 4" stroke="#3aa0e8" stroke-width="3" stroke-linecap="round"/>',
+  fange:
+    '<circle cx="50" cy="42" r="9" fill="' + HODE + '"/>' +
+    '<path d="M50 52 v24 M50 58 l-16 -16 M50 58 l16 -16 M50 76 l-10 16 M50 76 l10 16" stroke="' + KROPP + '" stroke-width="6" stroke-linecap="round" fill="none"/>' +
+    '<circle cx="50" cy="16" r="10" fill="#f2994a" stroke="#c46f22" stroke-width="2"/>' +
+    '<path d="M50 6 v20 M40 16 h20" stroke="#c46f22" stroke-width="2"/>' +
+    '<path d="M24 10 l8 4 M20 20 h9 M76 10 l-8 4 M80 20 h-9" stroke="#3aa0e8" stroke-width="3" stroke-linecap="round"/>',
+  bord:
+    '<rect x="12" y="40" width="76" height="10" rx="3" fill="#a0663a"/>' +
+    '<rect x="18" y="50" width="7" height="38" fill="#7a4a2a"/><rect x="75" y="50" width="7" height="38" fill="#7a4a2a"/>' +
+    '<rect x="12" y="40" width="76" height="4" rx="2" fill="#c08454"/>',
+  inni:
+    '<path d="M20 44 l30 -10 l30 10 z" fill="#b8844e"/>' +
+    '<circle cx="50" cy="44" r="13" fill="#e53935"/><ellipse cx="45" cy="39" rx="4" ry="2.5" fill="#fff" opacity=".5"/>' +
+    '<rect x="20" y="44" width="60" height="42" fill="#d9a066" stroke="#a0663a" stroke-width="3"/>' +
+    '<path d="M20 44 l-8 -12 M80 44 l8 -12" stroke="#a0663a" stroke-width="4" stroke-linecap="round"/>',
+  paa:
+    '<rect x="12" y="52" width="76" height="9" rx="3" fill="#a0663a"/>' +
+    '<rect x="18" y="61" width="7" height="30" fill="#7a4a2a"/><rect x="75" y="61" width="7" height="30" fill="#7a4a2a"/>' +
+    '<circle cx="50" cy="39" r="13" fill="#e53935"/><ellipse cx="45" cy="34" rx="4" ry="2.5" fill="#fff" opacity=".5"/>',
+  under:
+    '<rect x="12" y="30" width="76" height="9" rx="3" fill="#a0663a"/>' +
+    '<rect x="18" y="39" width="7" height="52" fill="#7a4a2a"/><rect x="75" y="39" width="7" height="52" fill="#7a4a2a"/>' +
+    '<circle cx="50" cy="78" r="13" fill="#e53935"/><ellipse cx="45" cy="73" rx="4" ry="2.5" fill="#fff" opacity=".5"/>',
+  stor:
+    '<circle cx="44" cy="54" r="36" fill="#2f80ed"/><circle cx="88" cy="82" r="7" fill="#c9d3df"/>' +
+    '<circle cx="32" cy="44" r="5" fill="#fff"/><circle cx="56" cy="44" r="5" fill="#fff"/>',
+  liten:
+    '<circle cx="44" cy="54" r="36" fill="none" stroke="#c9d3df" stroke-width="3" stroke-dasharray="6 6"/>' +
+    '<circle cx="44" cy="70" r="11" fill="#2f80ed"/><circle cx="40" cy="67" r="2" fill="#fff"/><circle cx="48" cy="67" r="2" fill="#fff"/>',
+  sitte:
+    '<rect x="44" y="58" width="36" height="8" rx="2" fill="#a0663a"/>' +
+    '<rect x="48" y="66" width="6" height="26" fill="#7a4a2a"/><rect x="70" y="66" width="6" height="26" fill="#7a4a2a"/>' +
+    '<circle cx="56" cy="20" r="9" fill="' + HODE + '"/>' +
+    '<path d="M56 30 v26 M56 38 l-14 10 M56 38 l14 10 M56 56 l-22 0 l0 30" stroke="' + KROPP + '" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>',
+  figurScene:
+    '<path d="M50 6 l12 26 l28 3 l-21 19 l6 28 l-25 -14 l-25 14 l6 -28 l-21 -19 l28 -3 z" fill="#f2c94c" stroke="#e0a100" stroke-width="3" stroke-linejoin="round"/>' +
+    '<circle cx="41" cy="44" r="4.5" fill="#1f2a37"/><circle cx="59" cy="44" r="4.5" fill="#1f2a37"/>' +
+    '<circle cx="42.5" cy="42.5" r="1.5" fill="#fff"/><circle cx="60.5" cy="42.5" r="1.5" fill="#fff"/>' +
+    '<path d="M42 54 q8 8 16 0" stroke="#9e3b38" stroke-width="3" fill="none" stroke-linecap="round"/>' +
+    '<circle cx="34" cy="53" r="4" fill="#f4a3a3" opacity=".7"/><circle cx="66" cy="53" r="4" fill="#f4a3a3" opacity=".7"/>' +
+    '<path d="M38 14 l12 -8 l12 8 z" fill="#8e44ad"/>',
   avatarScene:
     '<circle cx="50" cy="50" r="46" fill="#fff6c8"/>' +
     '<path d="M50 8 l6 12 l13 2 l-9 9 l2 13 l-12 -6 l-12 6 l2 -13 l-9 -9 l13 -2 z" fill="#e0a100"/>' +
@@ -342,4 +407,9 @@ export function bildeFinnes(nokkel) {
 
 export function avatarHTML(tema) {
   return tema === 'scene' ? svg('avatarScene') : piksel('avatarBlokk');
+}
+
+// Figuren barnet snakker med («Pip»).
+export function figurHTML(tema) {
+  return tema === 'scene' ? svg('figurScene') : piksel('figurBlokk');
 }

@@ -25,7 +25,7 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
     await sleep(500);
     if (await p.$('.ferdig-merke')) break;
     const instruks = await p.textContent('.instruks').catch(() => '');
-    const type = instruks.includes('Se og hør') ? 'intro' : instruks.includes('Hør og trykk') ? 'lytt' : instruks.includes('Si det') ? 'si' : instruks.includes('Lag') ? 'bygg' : '?';
+    const type = instruks.includes('Se og hør') ? 'intro' : instruks.includes('Hør og trykk') ? 'lytt' : instruks.includes('Si det') ? 'si' : instruks.includes('Lag') ? 'bygg' : instruks.includes('Snakk med') ? 'samtale' : instruks.includes('Hva ser du') ? 'beskriv' : '?';
     const ori = steg % 2 ? 'ligg' : 'staa';
     if (!sett[type + ori]) {
       sett[type + ori] = 1;
@@ -54,6 +54,11 @@ const sleep = (ms) => new Promise(r => setTimeout(r, ms));
       }
       await p.screenshot({ path: UT + (process.argv[3]||'blokk') + '-bygg-ferdig-' + ori + '.png' });
       await p.click('text=Neste ➜');
+    } else if (type === 'samtale') {
+      const v = await p.$('.svarvalg'); if (v) await v.click(); else await p.click('text=💡 Vis svaret');
+      const k = await p.$('text=Jeg svarte!'); await k.click(); await p.waitForFunction((el) => !el.isConnected, k, { timeout: 15000 });
+    } else if (type === 'beskriv') {
+      await p.click('text=💡 Hjelp'); await p.click('text=👍 Ferdig');
     } else { await p.screenshot({ path: UT + 'ukjent.png' }); break; }
   }
   await sleep(800);

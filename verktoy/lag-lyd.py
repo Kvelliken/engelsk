@@ -1,4 +1,5 @@
-"""Lager ferdige lydfiler for alle ord, ordbrikker og setninger i appen.
+"""Lager ferdige lydfiler for alt appen sier: ord, ordbrikker, setninger,
+spørsmål fra figuren og replikker i rollespill.
 
 Bruker Kokoro (https://github.com/thewh1teagle/kokoro-onnx, Apache 2.0), en
 naturlig stemmemodell som kjører lokalt. iPadens egen tekst-til-tale brukes
@@ -12,6 +13,10 @@ Oppsett (én gang):
 Kjør (krever ffmpeg):
     .tts/bin/python verktoy/lag-lyd.py --modell kokoro-v1.0.int8.onnx --stemmer voices-v1.0.bin
 
+Tekstene hentes fra verktoy/tekster.mjs (krever node), som bruker samme
+setningskode som appen. Fasit-stemmen sier ord og setninger; figuren (Pip og
+rollene i rollespill) har en egen stemme, med «f-» foran filnavnet.
+
 Bare nye tekster lages; bruk --alle for å lage alt på nytt (f.eks. ny stemme).
 Resultat: assets/lyd/*.mp3 og data/lyd.json (lista appen og service workeren bruker).
 """
@@ -24,16 +29,13 @@ from pathlib import Path
 
 ROT = Path(__file__).resolve().parent.parent
 LYD = ROT / "assets" / "lyd"
-STEMME = "af_heart"
+STEMME = "af_heart"        # fasit: ord, setninger, barnets replikker
+FIGURSTEMME = "am_michael"  # figuren som spør og svarer
 SPRAAK = "en-us"
 # Kokoro blir utydelig i starten av ord når den selv senker farten, så vi lager
 # lyden i normalt tempo og senker farten etterpå med ffmpeg (tonehøyden beholdes).
 TEMPO_ORD = 0.85
 TEMPO_SETNING = 0.9
-
-# Tekster som appen sier i tillegg til ord og setninger.
-EKSTRA = ["Hello! I like pizza. I see a cat."]
-
 
 def lydnokkel(tekst):
     """Samme regel som lydNokkel() i js/lyd.js."""
@@ -41,34 +43,9 @@ def lydnokkel(tekst):
     return t[:80]
 
 
-def lag_setning(ramme, ord):
-    ut = []
-    for t in ramme["mal"]:
-        if t == "{art}":
-            ut.append(ord["art"])
-        elif t == "{ord}":
-            ut.append(ord["en"])
-        elif t == "{liker}":
-            ut.append(ord["liker"])
-        else:
-            ut.append(t)
-    return ut
-
-
 def alle_tekster():
-    ord_liste = json.loads((ROT / "data" / "ord.json").read_text())
-    rammer = json.loads((ROT / "data" / "rammer.json").read_text())
-    ord_map = {o["id"]: o for o in ord_liste}
-    enkle, setninger = set(), set()
-    for o in ord_liste:
-        enkle.add(o["en"])
-    for r in rammer:
-        for oid in r["ord"]:
-            brikker = lag_setning(r, ord_map[oid])
-            enkle.update(brikker)  # brikkene sies når de legges i luka
-            setninger.add(" ".join(brikker))
-    setninger.update(EKSTRA)
-    return sorted(enkle), sorted(setninger)
+    ut = subprocess.run(["node", str(ROT / "verktoy" / "tekster.mjs")], check=True, capture_output=True, text=True).stdout
+    return json.loads(ut)
 
 
 def main():
@@ -83,22 +60,25 @@ def main():
 
     kokoro = Kokoro(a.modell, a.stemmer)
     LYD.mkdir(parents=True, exist_ok=True)
-    enkle, setninger = alle_tekster()
+    tekster = alle_tekster()
+    jobber = [(t, STEMME, "") for t in tekster["modell"]] + [(t, FIGURSTEMME, "f-") for t in tekster["figur"]]
     oppslag = {}
     nye = 0
-    for tekst, tempo in [(t, TEMPO_ORD) for t in enkle] + [(t, TEMPO_SETNING) for t in setninger]:
-        nokkel = lydnokkel(tekst)
-        if not nokkel or nokkel in oppslag:
+    for tekst, stemme, prefiks in jobber:
+        nokkel = prefiks + lydnokkel(tekst)
+        if not lydnokkel(tekst) or nokkel in oppslag:
             continue
         oppslag[nokkel] = tekst
         mp3 = LYD / (nokkel + ".mp3")
         if mp3.exists() and not a.alle:
             continue
+        tempo = TEMPO_ORD if " " not in tekst.strip() else TEMPO_SETNING
         uttale = tekst if re.search(r"[.!?]$", tekst) else tekst + "."
-        samples, rate = kokoro.create(uttale, voice=STEMME, speed=1.0, lang=SPRAAK)
+        samples, rate = kokoro.create(uttale, voice=stemme, speed=1.0, lang=SPRAAK)
         with tempfile.NamedTemporaryFile(suffix=".wav") as wav:
             sf.write(wav.name, samples, rate)
-            # Fjern stillhet på slutten (ikke i starten: det kan klippe svake lyder som f og h), jevn ut lydstyrken, mono 48 kbit/s.
+            # Fjern stillhet på slutten (ikke i starten: det kan klippe svake lyder som f og h),
+            # senk farten, jevn ut lydstyrken, mono 48 kbit/s.
             subprocess.run([
                 "ffmpeg", "-loglevel", "error", "-y", "-i", wav.name,
                 "-af", "areverse,"
@@ -107,7 +87,8 @@ def main():
                 "-ar", "24000", "-ac", "1", "-b:a", "48k", str(mp3),
             ], check=True)
         nye += 1
-        print("laget", mp3.name)
+        if nye % 50 == 0:
+            print(nye, "laget …", flush=True)
 
     # Fjern filer som ikke lenger brukes.
     for f in LYD.glob("*.mp3"):
@@ -116,7 +97,7 @@ def main():
             print("fjernet", f.name)
 
     (ROT / "data" / "lyd.json").write_text(json.dumps({
-        "stemme": "Kokoro " + STEMME,
+        "stemme": "Kokoro " + STEMME + " / figur " + FIGURSTEMME,
         "filer": sorted(oppslag),
     }, ensure_ascii=False, indent=0) + "\n")
     print(f"{nye} nye filer, {len(oppslag)} totalt")

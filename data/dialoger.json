@@ -1,0 +1,82 @@
+[
+  { "id": "butikk", "nivaa": 3, "tittel": "I butikken", "ikon": "emoji:🛒", "figur": "emoji:🧑‍🍳", "replikker": [
+    { "hvem": "figur", "en": "Hello! Welcome to my shop.", "norsk": "Hei! Velkommen til butikken min." },
+    { "hvem": "barn", "en": "Hello!", "norsk": "Hei!" },
+    { "hvem": "figur", "en": "What would you like?", "norsk": "Hva vil du ha?" },
+    { "hvem": "barn", "valg": [
+      { "en": "Can I have an apple, please?", "bilde": "emoji:🍎" },
+      { "en": "Can I have a banana, please?", "bilde": "emoji:🍌" },
+      { "en": "Can I have a cookie, please?", "bilde": "emoji:🍪" } ], "norsk": "Kan jeg få …, takk?" },
+    { "hvem": "figur", "en": "Here you are.", "norsk": "Vær så god." },
+    { "hvem": "barn", "en": "Thank you!", "norsk": "Takk!" },
+    { "hvem": "figur", "en": "Goodbye!", "norsk": "Ha det!" },
+    { "hvem": "barn", "en": "Goodbye!", "norsk": "Ha det!" } ] },
+  { "id": "fotball", "nivaa": 3, "tittel": "På fotballbanen", "ikon": "emoji:⚽", "figur": "emoji:🧑‍🏫", "interesse": "blokk", "replikker": [
+    { "hvem": "figur", "en": "Hi! Do you want to play football?", "norsk": "Hei! Vil du spille fotball?" },
+    { "hvem": "barn", "en": "Yes, please!", "norsk": "Ja takk!" },
+    { "hvem": "figur", "en": "Can you kick the ball?", "norsk": "Kan du sparke ballen?" },
+    { "hvem": "barn", "en": "Yes! I can kick the ball!", "bilde": "svg:sparke", "norsk": "Ja! Jeg kan sparke ballen!" },
+    { "hvem": "figur", "en": "Great! Kick it to me!", "norsk": "Flott! Spark den til meg!" },
+    { "hvem": "barn", "en": "Here you go!", "norsk": "Vær så god!" },
+    { "hvem": "figur", "en": "Goal! We win!", "norsk": "Mål! Vi vinner!" },
+    { "hvem": "barn", "en": "Yay! We win!", "bilde": "emoji:🏆", "norsk": "Jippi! Vi vinner!" } ] },
+  { "id": "venner", "nivaa": 3, "tittel": "Ny venn", "ikon": "emoji:👋", "figur": "emoji:🧒", "replikker": [
+    { "hvem": "figur", "en": "Hello! How are you?", "norsk": "Hei! Hvordan har du det?" },
+    { "hvem": "barn", "valg": [
+      { "en": "I am happy!", "bilde": "emoji:😄" },
+      { "en": "I am tired.", "bilde": "emoji:🥱" } ], "norsk": "Jeg er …" },
+    { "hvem": "figur", "en": "Do you want to play?", "norsk": "Vil du leke?" },
+    { "hvem": "barn", "en": "Yes! I can run fast!", "bilde": "emoji:🏃", "norsk": "Ja! Jeg kan løpe fort!" },
+    { "hvem": "figur", "en": "Me too! Let's go!", "norsk": "Jeg også! Kom igjen!" },
+    { "hvem": "barn", "en": "Let's go!", "norsk": "Kom igjen!" } ] },
+  { "id": "hatten", "nivaa": 4, "tittel": "Hvor er hatten?", "ikon": "emoji:👒", "figur": "emoji:👵", "replikker": [
+    { "hvem": "figur", "en": "Oh no! Where is my hat?", "norsk": "Å nei! Hvor er hatten min?" },
+    { "hvem": "barn", "en": "Is it under the bed?", "bilde": "emoji:🛏️", "norsk": "Er den under senga?" },
+    { "hvem": "figur", "en": "No, it is not under the bed.", "norsk": "Nei, den er ikke under senga." },
+    { "hvem": "barn", "en": "Is it on the chair?", "bilde": "emoji:🪑", "norsk": "Er den på stolen?" },
+    { "hvem": "figur", "en": "Yes! It is on the chair! Thank you!", "norsk": "Ja! Den er på stolen! Takk!" },
+    { "hvem": "barn", "en": "You are welcome!", "norsk": "Bare hyggelig!" } ] },
+  { "id": "utkledning", "nivaa": 4, "tittel": "Utkledning", "ikon": "emoji:👗", "figur": "emoji:🧚", "interesse": "scene", "replikker": [
+    { "hvem": "figur", "en": "Let's play dress up!", "norsk": "Skal vi kle oss ut?" },
+    { "hvem": "barn", "valg": [
+      { "en": "Yes! This is my hat.", "bilde": "emoji:👒" },
+      { "en": "Yes! This is my dress.", "bilde": "emoji:👗" } ], "norsk": "Ja! Dette er …" },
+    { "hvem": "figur", "en": "Wow! That is so nice!", "norsk": "Wow! Så fin!" },
+    { "hvem": "barn", "en": "Thank you! Where is my bag?", "bilde": "emoji:🎒", "norsk": "Takk! Hvor er sekken min?" },
+    { "hvem": "figur", "en": "It is on the sofa.", "norsk": "Den er på sofaen." },
+    { "hvem": "barn", "en": "Let's go on stage!", "bilde": "svg:scene", "norsk": "Kom, vi går på scenen!" } ] },
+  { "id": "marked", "nivaa": 5, "tittel": "På markedet", "ikon": "emoji:🍎", "figur": "emoji:🧑‍🌾", "replikker": [
+    { "hvem": "figur", "en": "Hello! How many apples do you want?", "norsk": "Hei! Hvor mange epler vil du ha?" },
+    { "hvem": "barn", "valg": [
+      { "en": "I want two apples, please.", "bilde": "emoji:🍎" },
+      { "en": "I want three apples, please.", "bilde": "emoji:🍎" } ], "norsk": "Jeg vil ha … epler, takk." },
+    { "hvem": "figur", "en": "Here you are. They are big and red.", "norsk": "Vær så god. De er store og røde." },
+    { "hvem": "barn", "en": "Thank you! I am hungry!", "bilde": "emoji:🤤", "norsk": "Takk! Jeg er sulten!" },
+    { "hvem": "figur", "en": "Do you want a cookie too?", "norsk": "Vil du ha en kjeks også?" },
+    { "hvem": "barn", "en": "Yes, please!", "bilde": "emoji:🍪", "norsk": "Ja takk!" } ] },
+  { "id": "byggeplass", "nivaa": 5, "tittel": "Byggeplassen", "ikon": "emoji:🚚", "figur": "emoji:👷", "interesse": "blokk", "replikker": [
+    { "hvem": "figur", "en": "Look! I have a big truck.", "norsk": "Se! Jeg har en stor lastebil." },
+    { "hvem": "barn", "en": "Wow! I have a small car.", "bilde": "emoji:🚗", "norsk": "Wow! Jeg har en liten bil." },
+    { "hvem": "figur", "en": "Let's build a house!", "norsk": "Skal vi bygge et hus?" },
+    { "hvem": "barn", "en": "Yes! I can build a big house.", "bilde": "piksel:hus", "norsk": "Ja! Jeg kan bygge et stort hus." },
+    { "hvem": "figur", "en": "Is it a red house?", "norsk": "Er det et rødt hus?" },
+    { "hvem": "barn", "valg": [
+      { "en": "No, it is a blue house!", "bilde": "farge:#1e88e5" },
+      { "en": "Yes, it is a red house!", "bilde": "farge:#e53935" } ], "norsk": "Det er et … hus!" } ] },
+  { "id": "showet", "nivaa": 6, "tittel": "På scenen", "ikon": "emoji:🎤", "figur": "emoji:🧑‍🎤", "interesse": "scene", "replikker": [
+    { "hvem": "figur", "en": "Welcome to the show!", "norsk": "Velkommen til forestillingen!" },
+    { "hvem": "barn", "en": "Hello, everybody!", "bilde": "emoji:👋", "norsk": "Hei, alle sammen!" },
+    { "hvem": "figur", "en": "What are you doing?", "norsk": "Hva holder du på med?" },
+    { "hvem": "barn", "valg": [
+      { "en": "I am dancing!", "bilde": "emoji:💃" },
+      { "en": "I am singing!", "bilde": "emoji:🎤" } ], "norsk": "Jeg …!" },
+    { "hvem": "figur", "en": "Wow! You are a star!", "norsk": "Wow! Du er en stjerne!" },
+    { "hvem": "barn", "en": "Thank you! Thank you!", "bilde": "emoji:⭐", "norsk": "Takk! Takk!" } ] },
+  { "id": "dragen", "nivaa": 6, "tittel": "Dragen", "ikon": "emoji:🐉", "figur": "emoji:🧙", "replikker": [
+    { "hvem": "figur", "en": "Look! A dragon!", "norsk": "Se! En drage!" },
+    { "hvem": "barn", "en": "Oh no! The dragon is flying!", "bilde": "emoji:🐉", "norsk": "Å nei! Dragen flyr!" },
+    { "hvem": "figur", "en": "Is the dragon angry?", "norsk": "Er dragen sint?" },
+    { "hvem": "barn", "en": "No! The dragon is laughing!", "bilde": "emoji:😂", "norsk": "Nei! Dragen ler!" },
+    { "hvem": "figur", "en": "Hello, dragon! Do you want to play?", "norsk": "Hei, drage! Vil du leke?" },
+    { "hvem": "barn", "en": "The dragon is dancing!", "bilde": "emoji:💃", "norsk": "Dragen danser!" } ] }
+]

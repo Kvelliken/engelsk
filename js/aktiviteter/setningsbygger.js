@@ -5,37 +5,44 @@ import { el, knapp, stokk } from '../dom.js';
 import { app } from '../tilstand.js';
 import { siTekst, effekt, stopp } from '../lyd.js';
 import { bilde, norskHjelp } from '../felles.js';
-import { finnRamme, lagSetning, rammeNivaa } from '../setninger.js';
+import { finnRamme, lagSetning, rammeNivaa, brikkeLuker, alternativer, form, setningsTekst, valgteOrd } from '../setninger.js';
 import { erSett } from '../srs.js';
 import { opptaksPanel } from './si-det-hoyt.js';
 import { konfetti } from '../belonning.js';
 
-function distraktorer(ramme, ord, fasit, antall, profil) {
-  const kandidater = ramme.ord
-    .filter((id) => id !== ord.id)
-    .map((id) => app.ordMap[id])
-    .filter(Boolean);
-  // Kjente ord først, så barnet kan skille på lyd og bilde.
-  const kjente = stokk(kandidater.filter((o) => erSett(profil, o.id)));
-  const andre = stokk(kandidater.filter((o) => !erSett(profil, o.id)));
+// Feilbrikker hentes fra andre ord som kunne stått i de tomme lukene.
+function distraktorer(ramme, valg, fasit, forsteLuke, antall, profil) {
+  const info = brikkeLuker(ramme);
+  let tomme = [];
+  for (let i = fasit.length - 1; i >= forsteLuke; i--) if (info[i]) tomme.push(info[i]);
+  if (!tomme.length) tomme = info.filter(Boolean).slice(-1);
+  const lister = tomme.map((l) => {
+    const alt = alternativer(ramme, l.luke, [valg[l.luke].id]);
+    const kjente = stokk(alt.filter((o) => erSett(profil, o.id)));
+    const andre = stokk(alt.filter((o) => !erSett(profil, o.id)));
+    return kjente.concat(andre).map((o) => form(o, l.form)).filter(Boolean);
+  });
   const ut = [];
-  for (const o of kjente.concat(andre)) {
-    const brikke = lagSetning(ramme, o).slice(-1)[0];
-    if (fasit.indexOf(brikke) === -1 && ut.indexOf(brikke) === -1) ut.push(brikke);
-    if (ut.length >= antall) break;
+  for (let runde = 0; ut.length < antall && runde < 40; runde++) {
+    const liste = lister[runde % lister.length];
+    const brikke = liste[Math.floor(runde / lister.length)];
+    if (brikke && fasit.indexOf(brikke) === -1 && ut.indexOf(brikke) === -1) ut.push(brikke);
   }
   return ut;
 }
 
 export function kjor(scene, oppgave, ktx) {
   const ramme = finnRamme(oppgave.ramme);
-  const ord = app.ordMap[oppgave.ord];
-  const fasit = lagSetning(ramme, ord);
-  const nivaa = rammeNivaa(ktx.profil, ramme.id);
+  const valg = {};
+  Object.keys(oppgave.valg).forEach((k) => { valg[k] = app.ordMap[oppgave.valg[k]]; });
+  const fasit = lagSetning(ramme, valg);
+  const nivaa = oppgave.proveNivaa || rammeNivaa(ktx.profil, ramme.id);
   const antallLuker = nivaa === 1 ? 1 : nivaa === 2 ? 2 : fasit.length;
   const forsteLuke = fasit.length - antallLuker;
-  const ekstra = distraktorer(ramme, ord, fasit, nivaa === 1 ? 2 : 1, ktx.profil);
-  const setning = fasit.join(' ');
+  const ekstra = distraktorer(ramme, valg, fasit, forsteLuke, nivaa === 1 ? 2 : 1, ktx.profil);
+  const setning = setningsTekst(fasit, ramme);
+  const lukeOrd = brikkeLuker(ramme).filter(Boolean).map((l) => valg[l.luke])
+    .filter((o, i, a) => a.indexOf(o) === i);
 
   return new Promise((resolve) => {
     let bom = false;
@@ -126,14 +133,14 @@ export function kjor(scene, oppgave, ktx) {
       rad.querySelectorAll('.brikke.fast').forEach((b) => b.classList.add('riktig'));
       effekt('riktig');
       konfetti(30);
-      tips.textContent = 'Riktig! Si setningen høyt du også. 🗣️';
+      tips.textContent = setning + ' Si den høyt du også! 🗣️';
       brett.hidden = true;
       siTekst(setning);
       const panel = opptaksPanel(() => siTekst(setning), ktx);
       scene.append(panel, knapp('Neste ➜', () => {
         panel.avslutt();
         stopp();
-        resolve({ riktig: !bom, brikker: fasit });
+        resolve({ riktig: !bom, brikker: fasit, ord: valgteOrd(ramme, valg) });
       }, 'knapp stor'));
     }
 
@@ -209,11 +216,10 @@ export function kjor(scene, oppgave, ktx) {
     const tips = el('p', { class: 'si-tips' }, nivaa === 1 ? 'Trykk på ordet som mangler.' : 'Trykk på ordene i riktig rekkefølge.');
 
     scene.append(
-      el('div', { class: 'instruks' }, '🧩 Lag setningen', norskHjelp(ramme.norsk + ' (' + ord.norsk + ')')),
+      el('div', { class: 'instruks' }, '🧩 Lag setningen', norskHjelp(ramme.norsk + ' (' + lukeOrd.map((o) => o.norsk).join(', ') + ')')),
       el('div', { class: 'setning-hint' },
         bilde(ramme.ikon),
-        el('span', { class: 'pluss-tegn' }, '+'),
-        bilde(ord.bilde)),
+        lukeOrd.filter((o) => o.bilde).map((o) => [el('span', { class: 'pluss-tegn' }, '+'), bilde(o.bilde)])),
       knapp('🔊 Hør setningen', () => siTekst(setning), 'knapp sekundar hor-knapp'),
       rad,
       brett,

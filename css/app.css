@@ -364,3 +364,132 @@ body[data-tema="blokk"] .prikk { border-radius: 3px; }
 @media (orientation: landscape) and (max-height: 860px) {
   .stort-bilde { width: min(36vh, 300px); height: min(36vh, 300px); font-size: min(26vh, 210px); }
 }
+
+/* ---------- Nivåer (hjem) ---------- */
+.startrad { display: grid; grid-template-columns: 1fr; gap: 14px; }
+@media (min-width: 900px) { .startrad { grid-template-columns: 3fr 2fr; } }
+.snakkeknapp {
+  display: flex; align-items: center; gap: 16px; width: 100%; min-height: 92px; padding: 12px 22px;
+  border-radius: var(--rund); border: 3px solid var(--aksent); background: var(--kort); color: var(--tekst);
+  text-align: left; cursor: pointer; box-shadow: 0 6px 0 var(--linje);
+}
+.snakkeknapp:active { transform: translateY(3px); box-shadow: 0 3px 0 var(--linje); }
+.snakk-figur { width: 64px; height: 64px; flex: none; display: inline-flex; }
+.snakk-figur svg { width: 100%; height: 100%; }
+.start-tittel.liten { font-size: 1.4rem; }
+
+.nivaasti { display: flex; flex-direction: column; gap: 12px; position: relative; }
+.nivaakort {
+  display: flex; align-items: center; gap: 16px; width: 100%; text-align: left;
+  padding: 14px 18px; border-radius: var(--rund); border: 3px solid var(--linje); background: var(--kort);
+  cursor: pointer; box-shadow: var(--skygge-myk); min-height: 96px;
+}
+.nivaakort:active { transform: scale(.99); }
+.nivaakort.her { border-color: var(--aksent); box-shadow: 0 0 0 5px var(--aksent-lys); }
+.nivaakort.laast { opacity: .6; background: var(--bg-2); }
+.nivaa-nr {
+  flex: none; width: 60px; height: 60px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 1.7rem; font-weight: 800; background: var(--aksent-lys); color: var(--aksent-mork); border: 3px solid var(--aksent);
+}
+body[data-tema="blokk"] .nivaa-nr { border-radius: 6px; }
+.nivaakort.fullfort .nivaa-nr { background: var(--aksent); color: #fff; }
+.nivaakort.laast .nivaa-nr { background: var(--bg); border-color: var(--linje); }
+.nivaa-tekst { flex: 1; display: flex; flex-direction: column; gap: 5px; min-width: 0; }
+.nivaa-tittel { font-weight: 800; font-size: 1.2rem; display: flex; gap: 8px; align-items: center; }
+.nivaa-maal { color: var(--dempet); font-size: 1rem; }
+.nivaa-status { font-size: 1.1rem; }
+.nivaakort .fremdrift-fyll { background: var(--aksent); }
+.nytt-nivaa { background: var(--aksent-lys); border: 3px solid var(--aksent); border-radius: var(--rund); padding: 14px 20px; max-width: 560px; }
+.nytt-nivaa-tittel { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+
+/* Nivåskjerm */
+.eksempler { display: flex; flex-direction: column; gap: 10px; }
+.eksempel {
+  display: flex; align-items: center; gap: 14px; min-height: 64px; padding: 8px 16px; text-align: left;
+  border-radius: var(--rund-liten); border: 2px solid var(--linje); background: var(--kort); font-size: 1.35rem; font-weight: 700; cursor: pointer;
+}
+.eksempel .eksempel-ikon { width: 44px; height: 44px; font-size: 36px; flex: none; }
+.eksempel span:nth-child(2) { flex: 1; }
+.hor-tegn { font-size: 1.4rem; }
+.knapperad.venstre { justify-content: flex-start; }
+
+/* ---------- Snakk med figuren ---------- */
+.samtale-topp { display: flex; align-items: center; gap: 14px; justify-content: center; max-width: 760px; width: 100%; }
+.figur { width: 110px; height: 110px; flex: none; animation: vippe 3s ease-in-out infinite; }
+.figur svg { width: 100%; height: 100%; }
+.snakkeboble {
+  position: relative; display: flex; align-items: center; gap: 10px; flex-wrap: wrap;
+  background: var(--kort); border: 3px solid var(--aksent); border-radius: 22px; padding: 14px 18px;
+  font-size: 1.6rem; font-weight: 800;
+}
+.snakkeboble::before {
+  content: ""; position: absolute; left: -14px; top: 50%; margin-top: -10px;
+  border: 10px solid transparent; border-right: 14px solid var(--aksent); border-left: 0;
+}
+.svarvalg-rad { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+.svarvalg {
+  width: 120px; height: 120px; font-size: 84px; padding: 14px; border-radius: var(--rund);
+  border: 4px solid var(--linje); background: var(--kort); cursor: pointer; box-shadow: var(--skygge-myk);
+}
+.svarvalg.valgt { border-color: var(--aksent); background: var(--aksent-lys); }
+.svar-hint { font-size: 1.3rem; color: var(--dempet); font-weight: 700; }
+.svar-linje {
+  font-size: 2rem; font-weight: 800; background: var(--riktig-lys); border: 3px solid var(--riktig);
+  border-radius: var(--rund-liten); padding: 10px 20px; animation: hopp .45s ease;
+}
+
+/* Bildescener */
+.scenebilde {
+  display: flex; align-items: flex-end; justify-content: center; gap: 18px; flex-wrap: wrap;
+  min-height: 170px; width: 100%; max-width: 720px; padding: 18px;
+  background: linear-gradient(var(--kort) 70%, var(--bg-2) 70%); border: 3px solid var(--linje); border-radius: var(--rund);
+}
+.scene-gruppe { display: flex; align-items: flex-end; justify-content: center; gap: 10px; flex-wrap: wrap; }
+.scene-ting { width: 110px; height: 110px; font-size: 92px; display: flex; align-items: center; justify-content: center; }
+.scene-ting svg { width: 100%; height: 100%; }
+.scene-ting .emoji { line-height: 1; font-family: "Apple Color Emoji", "Noto Color Emoji", "Segoe UI Emoji", sans-serif; }
+.scene-ting.liten-ting { width: 76px; height: 76px; font-size: 62px; }
+.scene-ting.kjempe { width: 170px; height: 170px; font-size: 150px; }
+.scene-ting.mini { width: 52px; height: 52px; font-size: 40px; }
+.scene-ting.merke-ting { width: 72px; height: 72px; font-size: 58px; }
+.plassering { position: relative; width: 190px; height: 190px; }
+.plassering .sted { position: absolute; left: 20px; bottom: 20px; width: 150px; height: 150px; font-size: 128px; }
+.plassering .ball { position: absolute; width: 50px; height: 50px; font-size: 42px; left: 70px; display: flex; align-items: center; justify-content: center; }
+.plassering.on .ball { bottom: 134px; }
+.plassering.on.sted-table .ball { bottom: 108px; }
+.plassering.on.sted-bath .ball { bottom: 124px; }
+.plassering.on.sted-sofa .ball { bottom: 108px; }
+/* «I»: tingen blir halvgjennomsiktig så ballen syns inni den */
+.plassering.in .sted { opacity: .45; }
+.plassering.in .ball { bottom: 68px; z-index: 2; }
+.plassering.under .ball { bottom: 0; }
+
+.hjelpesetninger { display: flex; flex-direction: column; gap: 8px; width: 100%; max-width: 560px; }
+.hjelpesetning {
+  min-height: 56px; padding: 8px 16px; border-radius: var(--rund-liten); border: 2px solid var(--riktig);
+  background: var(--riktig-lys); font-size: 1.35rem; font-weight: 700; text-align: left; cursor: pointer;
+}
+
+/* ---------- Rollespill ---------- */
+.roller { display: flex; align-items: center; gap: 18px; }
+.rolle { display: flex; flex-direction: column; align-items: center; gap: 2px; font-weight: 700; color: var(--dempet); }
+.rolle .bilde { width: 64px; height: 64px; font-size: 54px; }
+.mot { font-size: 1.6rem; color: var(--dempet); }
+.manus { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 760px; }
+.replikk { display: flex; align-items: flex-end; gap: 10px; max-width: 90%; }
+.replikk.venstre { align-self: flex-start; }
+.replikk.hoyre { align-self: flex-end; flex-direction: row-reverse; }
+.replikk-hvem { width: 48px; height: 48px; flex: none; font-size: 40px; display: flex; align-items: center; justify-content: center; }
+.replikk-hvem svg, .replikk-hvem .bilde { width: 100%; height: 100%; }
+.replikk-boble {
+  display: flex; align-items: center; gap: 10px; flex-wrap: wrap; padding: 10px 16px;
+  border-radius: 20px; background: var(--kort); border: 2px solid var(--linje); font-size: 1.35rem; font-weight: 700; text-align: left;
+}
+.replikk.hoyre .replikk-boble { background: var(--aksent-lys); border-color: var(--aksent); }
+.replikk.din .replikk-boble { box-shadow: 0 0 0 4px var(--aksent-lys); }
+.replikk-bilde { width: 44px; height: 44px; font-size: 36px; }
+.manus-kontroll { display: flex; flex-direction: column; align-items: center; gap: 12px; width: 100%; }
+.din-tur { font-size: 1.3rem; font-weight: 800; }
+.prikk.stor-prikk { width: 30px; border-radius: 8px; }
+
+@keyframes vippe { 0%, 100% { transform: rotate(-3deg); } 50% { transform: rotate(3deg) translateY(-3px); } }

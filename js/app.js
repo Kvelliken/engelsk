@@ -6,6 +6,7 @@ import { gaTil } from './nav.js';
 import { registrerServiceWorker } from './oppdatering.js';
 import './profiler.js';
 import './hjem.js';
+import './nivaaskjerm.js';
 import './okt.js';
 import './ordliste.js';
 import './voksen.js';
@@ -18,12 +19,15 @@ async function hentJson(sti) {
 
 async function start() {
   app.data = lastData();
-  const [ord, rammer, temaer] = await Promise.all([
+  const [ord, rammer, temaer, nivaaer, samtaler, dialoger] = await Promise.all([
     hentJson('./data/ord.json'),
     hentJson('./data/rammer.json'),
-    hentJson('./data/temaer.json')
+    hentJson('./data/temaer.json'),
+    hentJson('./data/nivaaer.json'),
+    hentJson('./data/samtaler.json'),
+    hentJson('./data/dialoger.json')
   ]);
-  settInnhold(ord, rammer, temaer);
+  settInnhold(ord, rammer, temaer, nivaaer, samtaler, dialoger);
   hentJson('./data/lyd.json').then((l) => settLydfiler(l.filer)).catch(() => {});
 
   // iOS: lyd kan først starte etter et trykk.

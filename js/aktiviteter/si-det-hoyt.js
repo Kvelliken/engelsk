@@ -18,7 +18,7 @@ async function forklarMikrofon() {
 
 // Panel med «Hør», «Snakk» og «Meg». fasit() spiller riktig uttale.
 // Brukes både her og i setningsbyggeren.
-export function opptaksPanel(fasit, ktx) {
+export function opptaksPanel(fasit, ktx, { vedOpptak = null } = {}) {
   const inst = app.data.innstillinger;
   let opptak = null;
   let minUrl = null;
@@ -61,6 +61,7 @@ export function opptaksPanel(fasit, ktx) {
     if (minUrl) URL.revokeObjectURL(minUrl);
     minUrl = await o.stopp();
     megKnapp.disabled = false;
+    if (vedOpptak) vedOpptak();
     await spillMeg();
     if (!panel.isConnected) return;
     tips.textContent = '🔊 Og slik sier vi det:';
