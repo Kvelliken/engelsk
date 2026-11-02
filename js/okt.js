@@ -436,7 +436,7 @@ function visFerdig(profil, oppsummering, { merke, modus, testResultat, nyttNivaa
       el('p', { class: 'ferdig-tekst' }, tekst),
       nivaaInfo ? el('div', { class: 'nytt-nivaa' },
         el('div', { class: 'nytt-nivaa-tittel' }, '🎉 Nivå ' + nivaaInfo.nr + ' er åpnet!'),
-        el('div', null, nivaaInfo.tittel + ': ' + nivaaInfo.maal)) : null,
+        el('div', null, nivaaInfo.tittel + ' – ' + nivaaInfo.maal)) : null,
       nye.length ? el('div', null,
         el('h2', { class: 'seksjon' }, 'Nye ord i dag:'),
         el('div', { class: 'nye-ord' }, nye.map((o) => knapp([bilde(o.bilde), o.en], () => siTekst(o.en), 'nytt-ord')))) : null,

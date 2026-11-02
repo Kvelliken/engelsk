@@ -97,7 +97,7 @@ async function meldNyttNivaa(p, apent) {
   await dialog(el('div', null,
     el('div', { class: 'stort-ikon' }, '🎉'),
     el('p', { class: 'dialog-tekst' }, 'Nivå ' + apent + ' er åpnet!'),
-    el('p', null, n.tittel + ': ' + n.maal)),
+    el('p', null, n.tittel + ' – ' + n.maal)),
   [{ tekst: 'Så gøy!', verdi: true, klasse: 'knapp stor' }]);
 }
 

@@ -80,8 +80,8 @@ for (const r of rammer) {
         else if (m[2] && m[2] !== 'flertall' && !o[m[2]]) feil.push('Ramme ' + r.id + ': ' + id + ' mangler ' + m[2]);
         else if (m[2] === 'flertall' && !o.flertall && !o.liker) feil.push('Ramme ' + r.id + ': ' + id + ' mangler flertall');
       }
-    } else if (!ord.some((o) => o.tema === 'smaaord' && o.en.toLowerCase() === t.toLowerCase())) {
-      feil.push('Ramme ' + r.id + ' bruker et småord som ikke er i ordlisten: ' + t);
+    } else if (!ord.some((o) => o.en.toLowerCase() === t.toLowerCase())) {
+      feil.push('Ramme ' + r.id + ' bruker et fast ord som ikke er i ordlisten: ' + t);
     }
   }
 }
