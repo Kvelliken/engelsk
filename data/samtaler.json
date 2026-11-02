@@ -1,0 +1,18 @@
+{
+  "kommentarer": ["Me too!", "Cool!", "Wow!", "Great!", "Nice!", "Good job!", "That's fun!", "Oh, really? Cool!"],
+  "samtaler": [
+    { "id": "see", "nivaa": 1, "sporsmal": "What do you see?", "norsk": "Hva ser du?", "ramme": "see", "type": "vis" },
+    { "id": "like", "nivaa": 1, "sporsmal": "What do you like?", "norsk": "Hva liker du?", "ramme": "like", "type": "velg" },
+    { "id": "how", "nivaa": 2, "sporsmal": "How are you?", "norsk": "Hvordan har du det?", "ramme": "am", "type": "velg" },
+    { "id": "have", "nivaa": 2, "sporsmal": "What do you have?", "norsk": "Hva har du?", "ramme": "have", "type": "velg" },
+    { "id": "can", "nivaa": 3, "sporsmal": "What can you do?", "norsk": "Hva kan du gjøre?", "ramme": "can", "type": "velg" },
+    { "id": "want", "nivaa": 3, "sporsmal": "What do you want?", "norsk": "Hva vil du ha?", "ramme": "want", "type": "velg" },
+    { "id": "shop", "nivaa": 3, "sporsmal": "Hello! What would you like?", "norsk": "Hei! Hva vil du ha?", "ramme": "please", "type": "velg" },
+    { "id": "what", "nivaa": 4, "sporsmal": "What is this?", "norsk": "Hva er dette?", "ramme": "my", "type": "vis" },
+    { "id": "where", "nivaa": 4, "sporsmal": "Where is the ball?", "norsk": "Hvor er ballen?", "ramme": "prep", "type": "vis" },
+    { "id": "many", "nivaa": 5, "sporsmal": "How many {ord.flertall} do you see?", "norsk": "Hvor mange ser du?", "ramme": "count", "type": "vis" },
+    { "id": "look", "nivaa": 5, "sporsmal": "Look! What do you see?", "norsk": "Se! Hva ser du?", "ramme": "adj-a", "type": "vis" },
+    { "id": "doing", "nivaa": 6, "sporsmal": "What are you doing?", "norsk": "Hva holder du på med?", "ramme": "doing-i", "type": "velg" },
+    { "id": "doing-it", "nivaa": 6, "sporsmal": "What is the {ord} doing?", "norsk": "Hva holder den på med?", "ramme": "doing-it", "type": "vis" }
+  ]
+}

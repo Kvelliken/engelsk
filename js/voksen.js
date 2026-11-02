@@ -10,6 +10,7 @@ import { rangerteStemmer, stemmeKvalitet, siTekst, siMedStemme } from './lyd.js'
 import { hentVersjon, sjekkOppdatering } from './oppdatering.js';
 import { idag, leggTilDager } from './dato.js';
 import { VERDENER } from './profiler.js';
+import { hoyesteApne, maksNivaa, settBestatt } from './nivaa.js';
 
 function tilbake() {
   gaTil(aktivProfil() ? 'hjem' : 'profiler');
@@ -64,6 +65,7 @@ function fremdrift() {
     const siste7 = p.okter.filter((o) => o.dato >= leggTilDager(idag(), -7)).length;
     return el('tr', null,
       el('td', null, p.navn),
+      el('td', null, String(hoyesteApne(p))),
       el('td', null, String(sett.length)),
       el('td', null, String(mestret)),
       el('td', null, String(p.okter.length) + ' (' + siste7 + ' siste uke)'),
@@ -77,11 +79,26 @@ function fremdrift() {
       .map((o) => o.en);
     return ord.length ? el('p', null, p.navn + ' øver mest på: ' + ord.join(', ')) : null;
   });
+  // Voksen kan åpne neste nivå (f.eks. hvis barnet kan ordene fra før).
+  const opplasing = app.data.profiler.map((p) => {
+    const n = hoyesteApne(p);
+    if (n >= maksNivaa()) return null;
+    return knapp('Åpne nivå ' + (n + 1) + ' for ' + p.navn, async () => {
+      const ok = await dialog('Åpne nivå ' + (n + 1) + ' for ' + p.navn + '? Ordene i nivå ' + n + ' legges inn i repetisjonen.', [
+        { tekst: 'Avbryt', verdi: false, klasse: 'knapp sekundar' },
+        { tekst: 'Åpne', verdi: true, klasse: 'knapp' }]);
+      if (!ok) return;
+      settBestatt(p, n, idag());
+      lagreData();
+      visVoksen();
+    }, 'knapp sekundar');
+  });
   return seksjon('Fremdrift',
     el('table', { class: 'tabell' },
-      el('thead', null, el('tr', null, ['Navn', 'Ord møtt', 'Ord med ★★★', 'Økter', 'Sist'].map((t) => el('th', null, t)))),
+      el('thead', null, el('tr', null, ['Navn', 'Nivå', 'Ord møtt', 'Ord med ★★★', 'Økter', 'Sist'].map((t) => el('th', null, t)))),
       el('tbody', null, rader)),
-    vanskelige);
+    vanskelige,
+    el('div', { class: 'knapperad' }, opplasing));
 }
 
 function eksport() {

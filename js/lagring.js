@@ -67,6 +67,10 @@ export function tilbakestillProfil(p) {
   p.okter = [];
   p.klistremerker = [];
   p.stjerner = 0;
+  p.nivaaer = {};
+  p.samtalerBrukt = {};
+  p.dialogerBrukt = {};
+  p.settNivaa = 1;
 }
 
 // Be nettleseren om ikke å slette dataene (støttes ikke overalt).

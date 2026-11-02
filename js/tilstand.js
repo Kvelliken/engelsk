@@ -7,7 +7,10 @@ export const app = {
   ordMap: {},
   rammer: [],
   temaer: [],
-  temaMap: {}
+  temaMap: {},
+  nivaaer: [],
+  samtaler: { kommentarer: [], samtaler: [] },
+  dialoger: []
 };
 
 export function lagreData() {
@@ -18,7 +21,10 @@ export function aktivProfil() {
   return app.data.profiler.find((p) => p.id === app.data.aktivProfil) || null;
 }
 
-export function settInnhold(ord, rammer, temaer) {
+export function settInnhold(ord, rammer, temaer, nivaaer = [], samtaler = null, dialoger = []) {
+  app.nivaaer = nivaaer;
+  if (samtaler) app.samtaler = samtaler;
+  app.dialoger = dialoger;
   app.ord = ord;
   app.rammer = rammer;
   app.temaer = temaer;
@@ -28,10 +34,10 @@ export function settInnhold(ord, rammer, temaer) {
   temaer.forEach((t) => { app.temaMap[t.id] = t; });
 }
 
-// Interessetemaet som hører til det visuelle temaet til profilen.
-export function interesseTema(profil) {
-  const t = app.temaer.find((x) => x.profiltema === profil.tema);
-  return t ? t.id : null;
+// Interessetemaene som hører til det visuelle temaet til profilen
+// (Byggeverden: blokker, sport, kjøretøy; Scenen: dans, klær, eventyr).
+export function interesseTemaer(profil) {
+  return app.temaer.filter((x) => x.profiltema === profil.tema).map((x) => x.id);
 }
 
 export function settVisueltTema(tema) {

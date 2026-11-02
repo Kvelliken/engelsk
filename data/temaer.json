@@ -1,8 +1,17 @@
 [
-  { "id": "dyr", "navn": "Dyr", "ikon": "emoji:🐶", "farge": "#f2994a" },
-  { "id": "mat", "navn": "Mat og drikke", "ikon": "emoji:🍎", "farge": "#eb5757" },
-  { "id": "farger-tall", "navn": "Farger og tall", "ikon": "emoji:🎨", "farge": "#2f80ed" },
-  { "id": "blokkverden", "navn": "Blokkverden", "ikon": "piksel:blokk", "farge": "#3f9a35", "profiltema": "blokk" },
-  { "id": "dans", "navn": "Dans og følelser", "ikon": "emoji:💃", "farge": "#8e44ad", "profiltema": "scene" },
-  { "id": "smaaord", "navn": "Småord", "ikon": "emoji:💬", "farge": "#5b6675", "skjult": true }
+  {"id": "dyr", "navn": "Dyr", "ikon": "emoji:🐶", "farge": "#f2994a", "nivaa": 1},
+  {"id": "mat", "navn": "Mat og drikke", "ikon": "emoji:🍎", "farge": "#eb5757", "nivaa": 1},
+  {"id": "farger-tall", "navn": "Farger og tall", "ikon": "emoji:🎨", "farge": "#2f80ed", "nivaa": 1},
+  {"id": "blokkverden", "navn": "Blokkverden", "ikon": "piksel:blokk", "farge": "#3f9a35", "profiltema": "blokk", "nivaa": 2},
+  {"id": "dans", "navn": "Dans og følelser", "ikon": "emoji:💃", "farge": "#8e44ad", "profiltema": "scene", "nivaa": 2},
+  {"id": "verb", "navn": "Ting jeg kan", "ikon": "emoji:🏃", "farge": "#27ae60", "nivaa": 3},
+  {"id": "sport", "navn": "Fotball og bandy", "ikon": "emoji:⚽", "farge": "#2f80ed", "nivaa": 3, "profiltema": "blokk"},
+  {"id": "leker", "navn": "Leker", "ikon": "emoji:🧸", "farge": "#f2994a", "nivaa": 3},
+  {"id": "hjemme", "navn": "Hjemme", "ikon": "emoji:🛋️", "farge": "#8a5a32", "nivaa": 4},
+  {"id": "klaer", "navn": "Klær", "ikon": "emoji:👕", "farge": "#eb5757", "nivaa": 4, "profiltema": "scene"},
+  {"id": "beskrive", "navn": "Hvordan er det?", "ikon": "emoji:🔥", "farge": "#e0a100", "nivaa": 5},
+  {"id": "kjoretoy", "navn": "Kjøretøy", "ikon": "emoji:🚌", "farge": "#3aa0e8", "nivaa": 5, "profiltema": "blokk"},
+  {"id": "eventyr", "navn": "Eventyr og teater", "ikon": "emoji:🐉", "farge": "#8e44ad", "nivaa": 6, "profiltema": "scene"},
+  {"id": "gjore", "navn": "Hva gjør du?", "ikon": "emoji:👋", "farge": "#27ae60", "nivaa": 6},
+  {"id": "smaaord", "navn": "Småord", "ikon": "emoji:💬", "farge": "#5b6675", "skjult": true, "nivaa": 1}
 ]

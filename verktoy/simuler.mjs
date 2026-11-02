@@ -1,4 +1,4 @@
-// Simulerer daglige økter for å sjekke repetisjonssystemet (uten nettleser):
+// Simulerer daglige økter for å sjekke repetisjon og nivåer (uten nettleser):
 //
 //     node verktoy/simuler.mjs [dager] [blokk|scene] [andel-riktig]
 import { readFileSync } from 'node:fs';
@@ -6,12 +6,14 @@ import { fileURLToPath } from 'node:url';
 import { app, settInnhold } from '../js/tilstand.js';
 import { tomData, nyProfil } from '../js/lagring.js';
 import { byggOkt } from '../js/okt.js';
-import { registrer, erSett, stjerner } from '../js/srs.js';
+import { registrer, erSett } from '../js/srs.js';
+import { hoyesteApne } from '../js/nivaa.js';
 import { leggTilDager } from '../js/dato.js';
 
 const rot = fileURLToPath(new URL('..', import.meta.url));
 const json = (f) => JSON.parse(readFileSync(rot + f, 'utf8'));
-settInnhold(json('data/ord.json'), json('data/rammer.json'), json('data/temaer.json'));
+settInnhold(json('data/ord.json'), json('data/rammer.json'), json('data/temaer.json'),
+  json('data/nivaaer.json'), json('data/samtaler.json'), json('data/dialoger.json'));
 
 const dager = Number(process.argv[2] || 21);
 const tema = process.argv[3] || 'blokk';
@@ -29,14 +31,17 @@ for (let d = 0; d < dager; d++) {
     const svar = Math.random() < andel ? 'riktig' : 'feil';
     if (o.type === 'intro') registrer(p, o.ord, 'sett', dag);
     else if (o.type === 'bygg') {
-      registrer(p, o.ord, svar === 'riktig' ? 'riktig' : 'delvis', dag);
+      Object.values(o.valg).forEach((id) => registrer(p, id, svar === 'riktig' ? 'riktig' : 'delvis', dag));
       const r = p.rammer[o.ramme] || (p.rammer[o.ramme] = { riktig: 0 });
       if (svar === 'riktig') r.riktig++;
-    } else registrer(p, o.ord, svar, dag);
+    } else if (o.type === 'samtale') {
+      Object.values(o.valg).forEach((id) => registrer(p, id, 'riktig', dag));
+    } else if (o.type === 'beskriv') {
+      o.ting.forEach((t) => registrer(p, t.ord, 'riktig', dag));
+    } else if (o.type === 'lytt' || o.type === 'si') registrer(p, o.ord, svar, dag);
   });
-  const sett = app.ord.filter((o) => erSett(p, o.id)).length;
-  const tre = app.ord.filter((o) => stjerner(p, o.id) === 3).length;
-  const rammer = [...new Set(oppgaver.filter((o) => o.type === 'bygg').map((o) => o.ramme))].join(',');
-  console.log(dag, String(oppgaver.length).padStart(2), JSON.stringify(typer), 'sett:', sett, '★★★:', tre, rammer ? 'rammer: ' + rammer : '');
+  p.okter.push({ dato: dag, fullfort: true, modus: 'vanlig' });
+  const sett = app.ord.filter((o) => o.bildeoppgave !== false && erSett(p, o.id)).length;
+  console.log(dag, 'nivå', hoyesteApne(p), String(oppgaver.length).padStart(2), JSON.stringify(typer), 'ord sett:', sett);
   dag = leggTilDager(dag, 1);
 }

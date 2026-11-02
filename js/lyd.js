@@ -78,8 +78,8 @@ export function settLydfiler(liste) {
   lydfiler = new Set(liste || []);
 }
 
-export function harLydfil(tekst) {
-  return lydfiler.has(lydNokkel(tekst));
+export function harLydfil(tekst, figur) {
+  return lydfiler.has((figur ? 'f-' : '') + lydNokkel(tekst));
 }
 
 function hentBuffer(nokkel) {
@@ -120,15 +120,17 @@ function spillBuffer(buffer) {
 }
 
 // Si en engelsk tekst: lydfil hvis den finnes, ellers iPadens stemme.
-export function siTekst(tekst, tempo) {
-  const nokkel = lydNokkel(tekst);
+// { figur: true } bruker figurens stemme (lydfiler med «f-» foran navnet).
+export function siTekst(tekst, valg) {
+  const figur = !!(valg && valg.figur);
+  const nokkel = (figur ? 'f-' : '') + lydNokkel(tekst);
   if (ctx && lydfiler.has(nokkel)) {
-    return hentBuffer(nokkel).then(spillBuffer, () => siMedStemme(tekst, tempo));
+    return hentBuffer(nokkel).then(spillBuffer, () => siMedStemme(tekst, null, figur));
   }
-  return siMedStemme(tekst, tempo);
+  return siMedStemme(tekst, null, figur);
 }
 
-export function siMedStemme(tekst, tempo) {
+export function siMedStemme(tekst, tempo, figur) {
   return new Promise((resolve) => {
     if (!harTale) return resolve();
     // iOS kan miste en ytring som startes rett etter cancel(), så vent litt da.
@@ -138,6 +140,7 @@ export function siMedStemme(tekst, tempo) {
     const v = velgStemme();
     if (v) { u.voice = v; u.lang = v.lang; } else { u.lang = 'en-GB'; }
     u.rate = tempo || (app.data && app.data.innstillinger.taleTempo) || 0.85;
+    if (figur) u.pitch = 0.8;
     let ferdig = false;
     const slutt = () => {
       if (ferdig) return;

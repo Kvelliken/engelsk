@@ -1,11 +1,14 @@
-// Hjemskjermen til en profil: dagens økt, fritt valg av tema og fremdrift.
-import { el, knapp, visSkjerm } from './dom.js';
-import { app, aktivProfil, interesseTema, settVisueltTema } from './tilstand.js';
-import { avatarHTML } from './bilder.js';
+// Hjemskjermen til en profil: dagens økt, snakkeøkt og nivåstien.
+import { el, knapp, visSkjerm, toast, dialog } from './dom.js';
+import { app, aktivProfil, settVisueltTema, lagreData } from './tilstand.js';
+import { avatarHTML, figurHTML } from './bilder.js';
 import { registrerSkjerm, gaTil } from './nav.js';
-import { topplinje, effektKnapp, bilde } from './felles.js';
-import { erSett, stjerner } from './srs.js';
+import { topplinje, effektKnapp } from './felles.js';
+import { erSett } from './srs.js';
 import { idag, dagerMellom } from './dato.js';
+import { hoyesteApne, fremdrift, erFullfort, erBestatt, hvordanApne, nivaaFor } from './nivaa.js';
+import { konfetti } from './belonning.js';
+import { effekt } from './lyd.js';
 
 function hilsen(p) {
   const sist = p.okter.length ? p.okter[p.okter.length - 1].dato : null;
@@ -15,18 +18,25 @@ function hilsen(p) {
   return 'Klar for en ny økt?';
 }
 
-function temaKort(p, tema) {
-  const ordITema = app.ord.filter((o) => o.tema === tema.id);
-  const sett = ordITema.filter((o) => erSett(p, o.id)).length;
-  const sum = ordITema.reduce((s, o) => s + stjerner(p, o.id), 0);
-  const andel = ordITema.length ? Math.round((sett / ordITema.length) * 100) : 0;
+function nivaaKort(p, n, apent) {
+  const f = fremdrift(p, n.nr);
+  const laast = n.nr > apent;
+  const fullfort = erFullfort(p, n.nr);
+  const her = n.nr === apent && !fullfort;
+  const andel = f.antall ? Math.round((f.medStjerne / f.antall) * 100) : 0;
+  const status = laast ? '🔒' : erBestatt(p, n.nr) ? '🏆' : fullfort ? '✓' : '⭐';
   return knapp([
-    bilde(tema.ikon, 'tema-ikon'),
-    el('div', { class: 'tema-navn' }, tema.navn),
-    el('div', { class: 'fremdrift', 'aria-hidden': 'true' },
-      el('div', { class: 'fremdrift-fyll', style: { width: andel + '%', background: tema.farge } })),
-    el('div', { class: 'tema-tall' }, sett + ' av ' + ordITema.length + ' ord · ' + sum + ' ★')
-  ], () => gaTil('okt', { fokusTema: tema.id }), 'temakort');
+    el('div', { class: 'nivaa-nr' }, laast ? '🔒' : String(n.nr)),
+    el('div', { class: 'nivaa-tekst' },
+      el('div', { class: 'nivaa-tittel' }, 'Nivå ' + n.nr + ': ' + n.tittel, !laast ? el('span', { class: 'nivaa-status' }, status) : null),
+      el('div', { class: 'nivaa-maal' }, laast ? 'Låst' : n.maal),
+      !laast ? el('div', { class: 'fremdrift', 'aria-hidden': 'true' },
+        el('div', { class: 'fremdrift-fyll', style: { width: andel + '%' } })) : null,
+      !laast ? el('div', { class: 'tema-tall' }, f.medStjerne + ' av ' + f.antall + ' ord med ★' + (her ? ' · Du er her!' : '')) : null)
+  ], () => {
+    if (laast) toast(hvordanApne(p, n.nr), { varighet: 5000 });
+    else gaTil('nivaa', n.nr);
+  }, 'nivaakort' + (laast ? ' laast' : '') + (her ? ' her' : '') + (fullfort ? ' fullfort' : ''));
 }
 
 function visHjem() {
@@ -34,18 +44,23 @@ function visHjem() {
   if (!p) return gaTil('profiler');
   settVisueltTema(p.tema);
 
-  const ferdigIdag = p.okter.some((o) => o.dato === idag() && o.fullfort);
+  const ferdigIdag = p.okter.some((o) => o.dato === idag() && o.fullfort && (o.modus || 'vanlig') === 'vanlig');
   const antallSett = app.ord.filter((o) => erSett(p, o.id)).length;
-  const interesse = interesseTema(p);
-  const temaer = app.temaer.filter((t) => !t.skjult)
-    .sort((a, b) => (b.id === interesse) - (a.id === interesse));
+  const apent = hoyesteApne(p);
 
   const start = knapp([
     el('span', { class: 'start-ikon', 'aria-hidden': 'true' }, ferdigIdag ? '➕' : '▶'),
     el('span', null,
       el('span', { class: 'start-tittel' }, ferdigIdag ? 'Øv litt ekstra' : 'Start dagens økt'),
-      el('span', { class: 'start-under' }, 'ca. 10 minutter'))
+      el('span', { class: 'start-under' }, 'Nivå ' + apent + ' · ca. 10 minutter'))
   ], () => gaTil('okt', {}), ferdigIdag ? 'startknapp ekstra' : 'startknapp');
+
+  const snakk = knapp([
+    el('span', { class: 'snakk-figur', html: figurHTML(p.tema) }),
+    el('span', null,
+      el('span', { class: 'start-tittel liten' }, 'Snakk med Pip'),
+      el('span', { class: 'start-under' }, 'Bare snakking · ca. 5 minutter'))
+  ], () => gaTil('okt', { modus: 'snakk' }), 'snakkeknapp');
 
   visSkjerm(el('div', { class: 'skjerm hjem' },
     topplinje(
@@ -59,12 +74,31 @@ function visHjem() {
       el('div', { class: 'statusrad' },
         el('div', { class: 'statusboks' }, el('b', null, '⭐ ' + p.stjerner), el('span', null, 'stjerner')),
         el('div', { class: 'statusboks' }, el('b', null, '📖 ' + antallSett), el('span', null, 'ord')),
-        el('div', { class: 'statusboks' }, el('b', null, '🏅 ' + p.klistremerker.length), el('span', null, 'merker'))),
-      start,
-      el('h2', { class: 'seksjon' }, 'Eller velg selv:'),
-      el('div', { class: 'temagrid' }, temaer.map((t) => temaKort(p, t))),
+        el('div', { class: 'statusboks' }, el('b', null, '🏅 ' + p.klistremerker.length), el('span', null, 'merker')),
+        el('div', { class: 'statusboks' }, el('b', null, '🪜 ' + apent), el('span', null, 'nivå'))),
+      el('div', { class: 'startrad' }, start, snakk),
+      el('h2', { class: 'seksjon' }, 'Nivåene dine'),
+      el('div', { class: 'nivaasti' }, app.nivaaer.map((n) => nivaaKort(p, n, apent))),
       el('div', { class: 'knapperad' },
         knapp('📖 Mine ord og merker', () => gaTil('ordliste'), 'knapp sekundar')))));
+  meldNyttNivaa(p, apent);
+}
+
+// Sier fra når et nivå er åpnet utenfor en økt (f.eks. etter en oppdatering
+// med nye nivåer, eller når en voksen har åpnet det).
+async function meldNyttNivaa(p, apent) {
+  const sist = p.settNivaa || 1;
+  p.settNivaa = Math.max(sist, apent);
+  if (apent <= sist) return;
+  lagreData();
+  const n = nivaaFor(apent);
+  effekt('ferdig');
+  konfetti(100);
+  await dialog(el('div', null,
+    el('div', { class: 'stort-ikon' }, '🎉'),
+    el('p', { class: 'dialog-tekst' }, 'Nivå ' + apent + ' er åpnet!'),
+    el('p', null, n.tittel + ': ' + n.maal)),
+  [{ tekst: 'Så gøy!', verdi: true, klasse: 'knapp stor' }]);
 }
 
 registrerSkjerm('hjem', visHjem);

@@ -1,50 +1,17 @@
 [
-  {
-    "id": "see",
-    "tekst": "I see a ___",
-    "norsk": "Jeg ser …",
-    "mal": ["I", "see", "{art}", "{ord}"],
-    "ikon": "emoji:👀",
-    "laasOpp": 0,
-    "eksempel": "I see a cat.",
-    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog",
-            "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich",
-            "house", "tree", "door", "stone", "block", "cave", "stage"]
-  },
-  {
-    "id": "am",
-    "tekst": "I am ___",
-    "norsk": "Jeg er …",
-    "mal": ["I", "am", "{ord}"],
-    "ikon": "emoji:🙋",
-    "laasOpp": 0,
-    "eksempel": "I am happy.",
-    "ord": ["happy", "sad", "angry", "scared", "surprised", "fast", "slow"]
-  },
-  {
-    "id": "like",
-    "tekst": "I like ___",
-    "norsk": "Jeg liker …",
-    "mal": ["I", "like", "{liker}"],
-    "ikon": "emoji:❤️",
-    "laasOpp": 6,
-    "eksempel": "I like pizza.",
-    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog",
-            "apple", "milk", "cake", "bread", "pizza", "banana", "egg", "ice-cream", "juice", "cookie", "cheese", "orange", "carrot", "strawberry", "sandwich", "soup",
-            "red", "blue", "green", "yellow", "black", "white", "pink", "purple", "brown", "grey",
-            "water", "sand", "build", "dig",
-            "music", "jump", "dance", "clap", "spin", "move"]
-  },
-  {
-    "id": "have",
-    "tekst": "I have a ___",
-    "norsk": "Jeg har …",
-    "mal": ["I", "have", "{art}", "{ord}"],
-    "ikon": "emoji:🤲",
-    "laasOpp": 12,
-    "eksempel": "I have a dog.",
-    "ord": ["dog", "cat", "fish", "bird", "horse", "pig", "duck", "mouse", "rabbit", "frog",
-            "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich",
-            "house", "block", "stone", "door"]
-  }
+  {"id": "see", "nivaa": 1, "tekst": "I see a ___", "norsk": "Jeg ser …", "mal": ["I", "see", "{ord.art}", "{ord}"], "ikon": "emoji:👀", "laasOpp": 0, "eksempel": "I see a cat", "slots": {"ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog", "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich", "house", "tree", "door", "stone", "block", "cave", "stage"]}},
+  {"id": "like", "nivaa": 1, "tekst": "I like ___", "norsk": "Jeg liker …", "mal": ["I", "like", "{ord.liker}"], "ikon": "emoji:❤️", "laasOpp": 6, "eksempel": "I like pizza", "slots": {"ord": ["dog", "cat", "fish", "bird", "horse", "pig", "cow", "duck", "mouse", "rabbit", "bear", "lion", "sheep", "elephant", "monkey", "frog", "apple", "milk", "cake", "bread", "pizza", "banana", "egg", "ice-cream", "juice", "cookie", "cheese", "orange", "carrot", "strawberry", "sandwich", "soup", "red", "blue", "green", "yellow", "black", "white", "pink", "purple", "brown", "grey", "water", "sand", "build", "dig", "music", "jump", "dance", "clap", "spin", "move", "football", "bandy", "run", "swim", "read", "sing", "draw", "skate", "climb", "play", "car", "robot", "teddy", "balloon", "game", "dragon", "unicorn", "magic", "castle"]}},
+  {"id": "am", "nivaa": 2, "tekst": "I am ___", "norsk": "Jeg er …", "mal": ["I", "am", "{ord}"], "ikon": "emoji:🙋", "laasOpp": 0, "eksempel": "I am happy", "slots": {"ord": ["happy", "sad", "angry", "scared", "surprised", "fast", "slow", "tired", "hungry", "cold", "hot", "strong", "funny"]}},
+  {"id": "have", "nivaa": 2, "tekst": "I have a ___", "norsk": "Jeg har …", "mal": ["I", "have", "{ord.art}", "{ord}"], "ikon": "emoji:🤲", "laasOpp": 12, "eksempel": "I have a dog", "slots": {"ord": ["dog", "cat", "fish", "bird", "horse", "pig", "duck", "mouse", "rabbit", "frog", "apple", "cake", "pizza", "banana", "egg", "ice-cream", "cookie", "orange", "carrot", "strawberry", "sandwich", "house", "block", "stone", "door", "ball", "bike", "teddy", "robot", "kite", "car"]}},
+  {"id": "can", "nivaa": 3, "tekst": "I can ___", "norsk": "Jeg kan …", "mal": ["I", "can", "{ord}"], "ikon": "emoji:💪", "laasOpp": 0, "eksempel": "I can swim", "slots": {"ord": ["run", "swim", "read", "sing", "draw", "write", "kick", "throw", "catch", "climb", "skate", "ride", "dance", "jump", "spin", "clap", "build", "dig"]}},
+  {"id": "want", "nivaa": 3, "tekst": "I want a ___", "norsk": "Jeg vil ha …", "mal": ["I", "want", "{ord.art}", "{ord}"], "ikon": "emoji:🤩", "laasOpp": 0, "eksempel": "I want a bike", "slots": {"ord": ["car", "bike", "teddy", "balloon", "robot", "game", "kite", "doll", "puzzle", "drum", "ball", "apple", "banana", "cake", "cookie", "ice-cream", "pizza", "dog", "cat", "rabbit"]}},
+  {"id": "please", "nivaa": 3, "tekst": "Can I have a ___, please?", "norsk": "Kan jeg få …, takk?", "mal": ["Can", "I", "have", "{ord.art}", "{ord}", "please"], "slutt": "?", "ikon": "emoji:🙏", "laasOpp": 0, "eksempel": "Can I have an apple, please", "slots": {"ord": ["apple", "banana", "cake", "cookie", "egg", "ice-cream", "orange", "sandwich", "strawberry", "pizza", "carrot", "ball", "balloon", "teddy", "car"]}},
+  {"id": "my", "nivaa": 4, "tekst": "This is my ___", "norsk": "Dette er min …", "mal": ["This", "is", "my", "{ord}"], "ikon": "emoji:👉", "laasOpp": 0, "eksempel": "This is my hat", "slots": {"ord": ["hat", "cap", "shirt", "dress", "shoe", "sock", "jacket", "bag", "scarf", "glove", "boot", "umbrella", "bed", "book", "cup", "box", "chair", "ball", "bike", "teddy", "dog", "cat"]}},
+  {"id": "where", "nivaa": 4, "tekst": "Where is my ___?", "norsk": "Hvor er … min?", "mal": ["Where", "is", "my", "{ord}"], "slutt": "?", "ikon": "emoji:🔍", "laasOpp": 0, "eksempel": "Where is my cap", "slots": {"ord": ["hat", "cap", "shoe", "sock", "jacket", "bag", "scarf", "glove", "book", "cup", "ball", "teddy", "dog", "cat"]}},
+  {"id": "prep", "nivaa": 4, "tekst": "It is under the ___", "norsk": "Den er under …", "mal": ["It", "is", "{prep}", "the", "{sted}"], "ikon": "emoji:📍", "laasOpp": 0, "eksempel": "It is under the bed", "hoved": "sted", "slots": {"prep": ["in", "on", "under"], "sted": ["bed", "table", "chair", "sofa", "box", "bag", "bath"]}},
+  {"id": "count", "nivaa": 5, "tekst": "I see three ___", "norsk": "Jeg ser tre …", "mal": ["I", "see", "{tall}", "{ord.flertall}"], "ikon": "emoji:🔢", "laasOpp": 0, "eksempel": "I see three cats", "slots": {"tall": ["two", "three", "four", "five"], "ord": ["cat", "dog", "bird", "fish", "duck", "apple", "banana", "egg", "car", "ball", "balloon", "star", "book", "cup", "boat", "dragon"]}},
+  {"id": "adj-a", "nivaa": 5, "tekst": "I see a big ___", "norsk": "Jeg ser en stor …", "mal": ["I", "see", "a", "{adj}", "{ord}"], "ikon": "emoji:🔎", "laasOpp": 0, "eksempel": "I see a big dog", "slots": {"adj": ["big", "small", "red", "blue", "green", "yellow", "pink", "funny"], "ord": ["dog", "cat", "car", "bus", "boat", "house", "ball", "horse", "fish", "dragon", "robot", "hat"]}},
+  {"id": "er-adj", "nivaa": 5, "tekst": "The ___ is hot", "norsk": "… er varm", "mal": ["The", "{ord}", "is", "{adj}"], "ikon": "emoji:🌡️", "laasOpp": 0, "eksempel": "The soup is hot", "slots": {"ord": ["dog", "cat", "elephant", "mouse", "soup", "water", "car", "monster"], "adj": ["big", "small", "hot", "cold", "wet", "funny", "fast", "slow", "tired", "hungry", "loud", "quiet"]}},
+  {"id": "doing-i", "nivaa": 6, "tekst": "I am ___ing", "norsk": "Jeg holder på å …", "mal": ["I", "am", "{ord.ing}"], "ikon": "emoji:🎬", "laasOpp": 0, "eksempel": "I am running", "slots": {"ord": ["build", "dig", "jump", "move", "dance", "clap", "spin", "run", "swim", "eat", "drink", "sleep", "play", "read", "sing", "draw", "write", "kick", "throw", "catch", "climb", "skate", "ride", "win", "walk", "sit", "laugh", "cry", "fly", "wave", "stand", "hide", "cook", "shout"]}},
+  {"id": "doing-it", "nivaa": 6, "tekst": "The ___ is ___ing", "norsk": "… holder på å …", "mal": ["The", "{ord}", "is", "{verb.ing}"], "ikon": "emoji:👀", "laasOpp": 0, "eksempel": "The dragon is flying", "slots": {"ord": ["dog", "cat", "bird", "dragon", "ghost", "monkey", "king", "queen"], "verb": ["run", "jump", "sleep", "eat", "swim", "dance", "fly", "sing", "laugh"]}}
 ]

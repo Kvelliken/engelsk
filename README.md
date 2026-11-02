@@ -2,12 +2,23 @@
 
 En nettapp (PWA) for at to barn skal lære engelsk med bilder, lyd og setninger, ca. 10 minutter om dagen. Se [SPEC.md](SPEC.md) for hele spesifikasjonen.
 
-**Status: Fase 1 (MVP)**
+**Status: Fase 1 og nivå 1–6**
 - To (opptil fire) profiler, hver med egen verden: 🧱 Byggeverden eller 🎭 Scenen
-- 98 ord i 5 temaer (Dyr, Mat og drikke, Farger og tall, Blokkverden, Dans og følelser) pluss 20 småord
-- Setningsrammer: `I see a ___`, `I am ___`, `I like ___` (åpnes etter 6 ord), `I have a ___` (etter 12 ord)
-- Aktiviteter: *Se og hør*, *Lytt og trykk*, *Si det høyt* (opptak mot fasit) og *Setningsbygger* (trykk eller dra)
-- Spredt repetisjon, daglig økt på 12–15 oppgaver, stjerner, merker og konfetti
+- 207 ord i 13 temaer pluss 21 småord, fordelt på 6 nivåer med ett nytt språksteg hvert:
+
+| Nivå | Tittel | Barnet lærer å si | Temaer |
+|---|---|---|---|
+| 1 | Første ord | *I see a cat. I like pizza.* | Dyr, Mat og drikke, Farger og tall |
+| 2 | Meg selv | *I am happy. I have a dog.* | Blokkverden, Dans og følelser |
+| 3 | Jeg kan og jeg vil | *I can swim. I want a bike. Can I have an apple, please?* | Ting jeg kan, Fotball og bandy, Leker |
+| 4 | Hvor er den? | *This is my hat. Where is my cap? It is under the bed.* | Hjemme, Klær |
+| 5 | Hvor mange og hvordan? | *I see three cats. I see a big dog. The soup is hot.* | Hvordan er det?, Kjøretøy |
+| 6 | Hva gjør du? | *I am running. The dragon is flying.* | Eventyr og teater, Hva gjør du? |
+
+- Neste nivå åpnes når ¾ av bildeordene i nivået har ★, eller når barnet består **🏆 Test deg ut**. En voksen kan også åpne et nivå i voksenvisningen.
+- Aktiviteter: *Se og hør*, *Lytt og trykk*, *Si det høyt* (opptak mot fasit), *Setningsbygger* (trykk eller dra), og for å trene på å snakke: **💬 Snakk med Pip** (figuren spør, barnet svarer med en hel setning), **🖼️ Beskriv bildet** og **🎭 Rollespill** (9 små dialoger, med «bytt roller»)
+- Dagens økt blander nye ord, repetisjon, setninger og snakking. **Snakk med Pip** på hjemskjermen gir en kort økt med bare snakking
+- Spredt repetisjon, stjerner, merker og konfetti
 - Voksenvisning (bak et regnestykke) med fremdrift, eksport/import, profiler og valg av stemme
 - Virker uten nett, ingen sporing og ingen tredjeparter
 
@@ -56,6 +67,15 @@ Appen bruker bare relative stier og har ikke noe byggesteg, så den virker direk
 - [ ] **Hent fremdrift**: lim inn koden eller velg filen, og fremdriften kommer tilbake
 - [ ] Velg stemme og tempo, og trykk 🔊 Test
 
+### Milepæl 4: Nivåer og snakking
+- [ ] Hjemskjermen viser **Nivåene dine**. Barn som har vært gjennom alt fra før, skal ha nivå 1–2 ✓ og stå på nivå 3
+- [ ] Trykk på et låst nivå: en melding forteller hva som skal til for å åpne det
+- [ ] Trykk på et åpent nivå: «Dette lærer du å si» (trykk for å høre), *Øv på nivået*, *Test deg ut*, rollespill og temaer
+- [ ] **Snakk med Pip**: figuren spør med egen stemme. Velg et bilde (eller trykk 💡 Vis svaret), si setningen høyt og trykk «Jeg svarte!»
+- [ ] **Beskriv bildet**: si det du ser, og trykk 💡 Hjelp for å høre setningene
+- [ ] **Rollespill**: figuren sier sine replikker, barnet sier sine. Til slutt kan rollene byttes
+- [ ] **Test deg ut**: 8 korte oppgaver. Klarer barnet nesten alle, åpnes neste nivå med feiring
+
 ### Oppdateringer
 Når en ny versjon er publisert, vises **«Ny versjon klar! Trykk her for å oppdatere»** nederst neste gang appen åpnes (med nett). Trykk på meldingen.
 
@@ -70,11 +90,14 @@ js/app.js            oppstart
 js/tilstand.js       felles tilstand
 js/lagring.js        localStorage, eksport/import
 js/srs.js            spredt repetisjon (Leitner-bokser)
-js/okt.js            setter sammen og kjører økter
-js/aktiviteter/      se-og-hor, lytt-og-trykk, si-det-hoyt, setningsbygger
+js/okt.js            setter sammen og kjører økter (dagens økt, snakkeøkt, rollespill, Test deg ut)
+js/nivaa.js          nivåer og opplåsing
+js/setninger.js      setningsrammer med luker
+js/aktiviteter/      se-og-hor, lytt-og-trykk, si-det-hoyt, setningsbygger, samtale, beskriv, rollespill
+js/scene.js          bildescener (svarbilder og «beskriv bildet»)
 js/lyd.js, opptak.js tale, effekter og lydopptak
 js/bilder.js         all grafikk (pikselkunst, SVG, emoji)
-data/                ord.json, rammer.json, temaer.json
+data/                ord.json, rammer.json, temaer.json, nivaaer.json, samtaler.json, dialoger.json, lyd.json
 verktoy/             sjekk-, simulerings- og testskript (ikke en del av appen)
 ```
 
@@ -84,7 +107,7 @@ verktoy/             sjekk-, simulerings- og testskript (ikke en del av appen)
 1. `node verktoy/sjekk.mjs` sjekker ordlisten, rammene, at alle filer står i cache-listen i `sw.js`, og at det ikke finnes eksterne adresser.
 2. Bytt `VERSJON` øverst i `sw.js` (f.eks. `2026-10-17.1`), ellers får ikke iPaden oppdateringen.
 
-**Nettlesertester** (krever Playwright og lokal server): `node verktoy/test-okt.cjs Ola blokk` kjører en hel økt, og `node verktoy/test-aksept.cjs` sjekker trykkflater, eksport/import, offline-start og oppdatering. `node verktoy/simuler.mjs 21 scene` simulerer tre uker med økter.
+**Nettlesertester** (krever Playwright og lokal server): `node verktoy/test-okt.cjs Ola blokk` kjører en hel økt, og `node verktoy/test-aksept.cjs` sjekker trykkflater, eksport/import, offline-start og oppdatering. `node verktoy/test-nivaa.cjs scene 6` tester nivåsti, snakkeøkt, rollespill, Test deg ut og dagens økt for en profil på nivå 6. `node verktoy/simuler.mjs 70 scene` simulerer ti uker med økter og viser når nivåene åpnes.
 
 ### Legge til ord
 Legg til en linje i `data/ord.json`:
@@ -96,13 +119,15 @@ Legg til en linje i `data/ord.json`:
 
 - `bilde`: `emoji:🚗`, `farge:#e53935`, `tall:3`, `piksel:<navn>` eller `svg:<navn>` (de to siste tegnes i `js/bilder.js`)
 - `art` (a/an) trengs for `I see a` / `I have a`; `liker` er formen i `I like ___` (cars, pizza, dancing)
-- Ta med ordet i `ord`-lista til rammene det passer i (`data/rammer.json`)
+- Ta med ordet i lukene (`slots`) til rammene det passer i (`data/rammer.json`). En ramme som `["I", "see", "{tall}", "{ord.flertall}"]` har lukene `tall` og `ord`; `{ord.flertall}` betyr flertallsformen (`flertall`), `{ord.art}` artikkelen og `{verb.ing}` `ing`-formen
+- Temaet bestemmer nivået (`nivaa` i `data/temaer.json`), og `data/nivaaer.json` sier hvilke temaer og rammer hvert nivå har
+- Nye spørsmål til Pip legges i `data/samtaler.json`, nye rollespill i `data/dialoger.json`
 - `lyd`: (valgfritt) sti til en egen innspilt lydfil, f.eks. `./assets/egen-lyd/car.mp3`
 - Nytt tema: legg det til i `data/temaer.json`
 - Lag lydfiler for nye ord og setninger (se under). Uten lydfil brukes iPadens stemme.
 
 ### Lydfiler
-Ord, ordbrikker og setninger spilles fra `assets/lyd/*.mp3`, laget med stemmemodellen [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, kjører lokalt). `data/lyd.json` lister filene, og service workeren lagrer dem for bruk uten nett. Etter at du har lagt til ord eller rammer:
+Ord, ordbrikker, setninger, figurens spørsmål og replikkene i rollespill spilles fra `assets/lyd/*.mp3` (ca. 1000 filer, ca. 8 MB). Fasit-stemmen er `af_heart`, figuren har en egen stemme (`am_michael`, filer med «f-» foran). Filene er laget med stemmemodellen [Kokoro](https://github.com/thewh1teagle/kokoro-onnx) (Apache 2.0, kjører lokalt). `data/lyd.json` lister filene, og service workeren lagrer dem for bruk uten nett. Etter at du har lagt til ord eller rammer:
 
 ```
 python3 -m venv .tts && .tts/bin/pip install kokoro-onnx soundfile      # én gang
@@ -111,7 +136,7 @@ curl -LO https://github.com/thewh1teagle/kokoro-onnx/releases/download/model-fil
 .tts/bin/python verktoy/lag-lyd.py --modell kokoro-v1.0.int8.onnx --stemmer voices-v1.0.bin
 ```
 
-Bare nye tekster lages. Stemmen (`STEMME`) og tempoet står øverst i skriptet; bruk `--alle` for å lage alt på nytt. `node verktoy/sjekk.mjs` sier fra om tekster som mangler lydfil.
+Tekstene hentes fra `verktoy/tekster.mjs`, som bruker samme setningskode som appen. Bare nye tekster lages. Stemmen (`STEMME`) og tempoet står øverst i skriptet; bruk `--alle` for å lage alt på nytt. `node verktoy/sjekk.mjs` sier fra om tekster som mangler lydfil.
 
 ## Personvern
 Ingen innlogging, ingen sporing, ingen analyse, ingen eksterne lenker og ingen tredjepartsskript. En Content-Security-Policy i `index.html` stopper alle nettverkskall til andre domener. Alt lagres lokalt på iPaden. Lydopptak lagres ikke, de forsvinner når oppgaven er ferdig.

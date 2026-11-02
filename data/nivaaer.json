@@ -1,0 +1,8 @@
+[
+  {"nr": 1, "tittel": "Første ord", "maal": "Si hva du ser og hva du liker", "rammer": ["see", "like"], "temaer": ["dyr", "mat", "farger-tall"]},
+  {"nr": 2, "tittel": "Meg selv", "maal": "Si hvordan du har det og hva du har", "rammer": ["am", "have"], "temaer": ["blokkverden", "dans"]},
+  {"nr": 3, "tittel": "Jeg kan og jeg vil", "maal": "Si hva du kan, hva du vil ha – og spør pent", "rammer": ["can", "want", "please"], "temaer": ["verb", "sport", "leker"]},
+  {"nr": 4, "tittel": "Hvor er den?", "maal": "Vis fram tingene dine og si hvor ting er", "rammer": ["my", "where", "prep"], "temaer": ["hjemme", "klaer"]},
+  {"nr": 5, "tittel": "Hvor mange og hvordan?", "maal": "Tell og beskriv: store, små, varme og kalde ting", "rammer": ["count", "adj-a", "er-adj"], "temaer": ["beskrive", "kjoretoy"]},
+  {"nr": 6, "tittel": "Hva gjør du?", "maal": "Si hva du og andre holder på med akkurat nå", "rammer": ["doing-i", "doing-it"], "temaer": ["eventyr", "gjore"]}
+]

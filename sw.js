@@ -1,6 +1,6 @@
 // Service worker: cacher hele appen slik at den virker uten nett.
 // Bytt VERSJON når noe endres, så kommer oppdateringen frem til iPaden.
-const VERSJON = '2026-10-16.3';
+const VERSJON = '2026-11-02.1';
 const CACHE = 'engelsk-' + VERSJON;
 
 const FILER = [
@@ -18,16 +18,22 @@ const FILER = [
   './js/lagring.js',
   './js/lyd.js',
   './js/nav.js',
+  './js/nivaa.js',
+  './js/nivaaskjerm.js',
   './js/okt.js',
   './js/oppdatering.js',
   './js/opptak.js',
   './js/ordliste.js',
   './js/profiler.js',
+  './js/scene.js',
   './js/setninger.js',
   './js/srs.js',
   './js/tilstand.js',
   './js/voksen.js',
+  './js/aktiviteter/beskriv.js',
   './js/aktiviteter/lytt-og-trykk.js',
+  './js/aktiviteter/rollespill.js',
+  './js/aktiviteter/samtale.js',
   './js/aktiviteter/se-og-hor.js',
   './js/aktiviteter/setningsbygger.js',
   './js/aktiviteter/si-det-hoyt.js',
@@ -35,6 +41,9 @@ const FILER = [
   './data/rammer.json',
   './data/temaer.json',
   './data/lyd.json',
+  './data/nivaaer.json',
+  './data/samtaler.json',
+  './data/dialoger.json',
   './assets/ikoner/ikon-180.png',
   './assets/ikoner/ikon-192.png',
   './assets/ikoner/ikon-512.png',
